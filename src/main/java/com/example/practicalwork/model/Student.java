@@ -8,7 +8,7 @@ public class Student {
     @TableField("student_no")
     private int studentId;
 
-    private int studentNo;
+    private String studentNo;
 
     private String studentName;
 
@@ -26,11 +26,11 @@ public class Student {
         this.studentId = studentId;
     }
 
-    public int getStudentNo() {
+    public String getStudentNo() {
         return studentNo;
     }
 
-    public void setStudentNo(int studentNo) {
+    public void setStudentNo(String studentNo) {
         this.studentNo = studentNo;
     }
 

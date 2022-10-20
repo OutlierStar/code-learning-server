@@ -13,17 +13,24 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     private StudentMapper studentMapper;
     @Override
-    public boolean InspectionLogin(Integer account, String password) {
+    public boolean StuInspectionLogin(String StuNo, String password) {
 
-        QueryWrapper<Student> qw = new QueryWrapper<>();
-        QueryWrapper<Student> no = qw.eq("student_no",account);
 
-        Student student = studentMapper.selectOne(no);
+        Student student = getOneStu(StuNo);
         System.out.println(student.toString());
         if (student.getStudentPassword().equals(password)){
             return true;
         }else{
             return false;
         }
+    }
+
+    @Override
+    public Student getOneStu(String StuNo) {
+        QueryWrapper<Student> qw = new QueryWrapper<>();
+        QueryWrapper<Student> no = qw.eq("student_no",StuNo);
+        Student stu = studentMapper.selectOne(no);
+
+        return stu;
     }
 }
