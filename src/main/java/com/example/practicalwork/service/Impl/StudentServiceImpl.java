@@ -1,7 +1,9 @@
 package com.example.practicalwork.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.practicalwork.Mapper.QuestionSetMapper;
 import com.example.practicalwork.Mapper.StudentMapper;
+import com.example.practicalwork.model.QuestionSet;
 import com.example.practicalwork.model.Student;
 import com.example.practicalwork.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private StudentMapper studentMapper;
+    @Autowired
+    QuestionSetMapper questionSetMapper;
+
     @Override
     public boolean StuInspectionLogin(String StuNo, String password) {
 
@@ -33,4 +38,5 @@ public class StudentServiceImpl implements StudentService {
 
         return stu;
     }
+
 }

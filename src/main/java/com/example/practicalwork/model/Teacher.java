@@ -1,7 +1,11 @@
 package com.example.practicalwork.model;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+
 public class Teacher {
-    private int teacherId;
+    @TableId("teacherId")
+
+    private Integer teacherId;
 
     private String teacherNo;
 

@@ -1,9 +1,12 @@
 package com.example.practicalwork.model;
 
-public class SelectCourse {
-    private int courseId;
-    private String clazzNo;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 
+public class SelectCourse {
+
+    private Integer courseId;
+    private String clazzNo;
     public int getCourseId() {
         return courseId;
     }

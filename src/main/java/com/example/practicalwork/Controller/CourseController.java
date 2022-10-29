@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class CourseController {
-    @RequestMapping("/selectCourse")
-    public Course selectCourse(HttpServletRequest request,@RequestParam("classNO")String classNo){
-
-        CourseServiceImpl service = new CourseServiceImpl();
-        Course course = service.queryCourse(classNo);
-        return course;
-    }
+//    @RequestMapping("/selectCourse")
+//    public List<Course> selectCourse(HttpServletRequest request, @RequestParam("classNO")String classNo){
+//        CourseServiceImpl service = new CourseServiceImpl();
+//        Course course = service.queryCourse(classNo);
+//        return course;
+//    }
 
 
 }

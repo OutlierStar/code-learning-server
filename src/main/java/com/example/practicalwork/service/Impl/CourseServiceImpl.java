@@ -9,6 +9,9 @@ import com.example.practicalwork.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class CourseServiceImpl implements CourseService {
     @Autowired
@@ -17,16 +20,33 @@ public class CourseServiceImpl implements CourseService {
     @Autowired
     private CourseMapper courseMapper;
 
+
+    /*
+        获取一个班的所有课程
+     */
     @Override
-    public Course queryCourse(String clazzNO) {
+    public List<Course> queryCourse(String clazzNO) {
+        List<Course> courseList = new ArrayList<>();
         QueryWrapper<SelectCourse> qSelCourse = new QueryWrapper<>();
         QueryWrapper<SelectCourse> selCourse = qSelCourse.eq("clazz_no",clazzNO);
-        SelectCourse selectCourse = selectCourseMapper.selectOne(selCourse);
+        List<SelectCourse> selectCourses = selectCourseMapper.selectList(selCourse);
 
         QueryWrapper<Course> qCourse = new QueryWrapper<>();
-        QueryWrapper<Course> getCourse = qCourse.eq("course_id",selectCourse.getCourseId());
-        Course course = courseMapper.selectOne(getCourse);
-
-        return course;
+        for (SelectCourse selectCourse : selectCourses){
+            QueryWrapper<Course> getCourse = qCourse.eq("course_id",selectCourse.getCourseId());
+            Course course = courseMapper.selectOne(getCourse);
+            courseList.add(course);
+        }
+        return courseList;
     }
+
+
+
+    @Override
+    public void addCourse(Course course) {
+        int count = courseMapper.insert(course);
+        System.out.println("插入成功");
+    }
+
+
 }

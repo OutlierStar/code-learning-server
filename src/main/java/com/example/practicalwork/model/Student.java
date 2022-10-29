@@ -1,12 +1,11 @@
 package com.example.practicalwork.model;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
-import org.springframework.stereotype.Component;
-@TableName("student")
+import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.Data;
+
 public class Student {
-    @TableField("student_no")
-    private int studentId;
+    @TableId(value = "student_id")
+    private Integer studentId;
 
     private String studentNo;
 
@@ -14,9 +13,34 @@ public class Student {
 
     private String studentPassword;
 
-    private String clazzNo;
+    private Data studentBirth;
 
     private String memo;
+
+    private String clazzNo;
+
+    private String school;
+
+    private String major;
+
+
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
+
+
+    public String getSchool() {
+        return school;
+    }
+
+    public void setSchool(String school) {
+        this.school = school;
+    }
 
     public int getStudentId() {
         return studentId;
@@ -32,14 +56,6 @@ public class Student {
 
     public void setStudentNo(String studentNo) {
         this.studentNo = studentNo;
-    }
-
-    public String getStudentName() {
-        return studentName;
-    }
-
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
     }
 
     public String getStudentPassword() {
@@ -66,15 +82,34 @@ public class Student {
         this.memo = memo;
     }
 
+    public Data getStudentBirth() {
+        return studentBirth;
+    }
+
+    public void setStudentBirth(Data studentBirth) {
+        this.studentBirth = studentBirth;
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
+    }
+
     @Override
     public String toString() {
         return "Student{" +
                 "studentId=" + studentId +
-                ", studentNo=" + studentNo +
+                ", studentNo='" + studentNo + '\'' +
                 ", studentName='" + studentName + '\'' +
                 ", studentPassword='" + studentPassword + '\'' +
-                ", clazzNo='" + clazzNo + '\'' +
+                ", studentBirth=" + studentBirth +
                 ", memo='" + memo + '\'' +
+                ", clazzNo='" + clazzNo + '\'' +
+                ", school='" + school + '\'' +
+                ", major='" + major + '\'' +
                 '}';
     }
 }
