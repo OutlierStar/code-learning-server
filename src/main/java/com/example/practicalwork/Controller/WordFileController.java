@@ -1,6 +1,7 @@
 package com.example.practicalwork.Controller;
 
 import com.example.practicalwork.Mapper.StudentMapper;
+import com.example.practicalwork.model.Clazz;
 import com.example.practicalwork.model.Student;
 import com.example.practicalwork.service.Impl.StudentServiceImpl;
 import com.example.practicalwork.service.Impl.WordServiceImpl;
@@ -23,12 +24,13 @@ public class WordFileController {
     @RequestMapping(value="/getWord")
     public void getZbrzWord(HttpServletRequest request, HttpServletResponse response, @RequestParam("stuNo") String stuNO) {
         Student student = studentService.getOneStu(stuNO);
+        Clazz clazz = (Clazz) request.getSession().getAttribute("clazzInfo");
         HashMap<String,Object> params = new HashMap<>();
         //word模板地址
         String wordModelPath = "C:\\Users\\喻涛\\Documents\\test\\text01.docx";
         //生成临时文件地址
         String filePath = "C:\\Users\\喻涛\\Documents\\test";
-        params.put("clazz",student.getClazzNo());
+        params.put("clazz",clazz.getClazzNo());
         params.put("name",student.getStudentName());
         params.put("stuNo",student.getStudentNo());
         params.put("workName","vue训练");

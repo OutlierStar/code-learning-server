@@ -9,6 +9,37 @@ public class Course {
     private String courseName;
     private String Memo;
     private String courseDate;
+    private String invitationCode;
+    private String clazzNO;
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "courseId=" + courseId +
+                ", teacherNo='" + teacherNo + '\'' +
+                ", courseName='" + courseName + '\'' +
+                ", Memo='" + Memo + '\'' +
+                ", courseDate='" + courseDate + '\'' +
+                ", invitationCode='" + invitationCode + '\'' +
+                ", clazzNO='" + clazzNO + '\'' +
+                '}';
+    }
+
+    public String getClazzNO() {
+        return clazzNO;
+    }
+
+    public void setClazzNO(String clazzNO) {
+        this.clazzNO = clazzNO;
+    }
+
+    public String getInvitationCode() {
+        return invitationCode;
+    }
+
+    public void setInvitationCode(String invitationCode) {
+        this.invitationCode = invitationCode;
+    }
 
     public Integer getCourseId() {
         return courseId;
@@ -50,14 +81,4 @@ public class Course {
         this.courseDate = courseDate;
     }
 
-    @Override
-    public String toString() {
-        return "Course{" +
-                "courseId=" + courseId +
-                ", teacherNo='" + teacherNo + '\'' +
-                ", courseName='" + courseName + '\'' +
-                ", Memo='" + Memo + '\'' +
-                ", courseDate='" + courseDate + '\'' +
-                '}';
-    }
 }

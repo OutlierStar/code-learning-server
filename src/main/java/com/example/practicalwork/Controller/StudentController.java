@@ -1,8 +1,10 @@
 package com.example.practicalwork.Controller;
 
+import com.example.practicalwork.model.Clazz;
 import com.example.practicalwork.model.Course;
 import com.example.practicalwork.model.Student;
 import com.example.practicalwork.service.CourseService;
+import com.example.practicalwork.service.Impl.Msg;
 import com.example.practicalwork.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,10 +25,10 @@ public class StudentController {
     private CourseService courseService;
 
     /*
-        获取当前学生用户的个人信息和课程信息
+        获取学生主页展示信息
      */
     @RequestMapping(value = "/StuHomePage")
-    public ModelAndView Loginto(HttpServletRequest request,@RequestParam("studentNo")String studentNo,@RequestParam("studentPassword") String studentPassword){
+    public Msg Loginto(HttpServletRequest request, @RequestParam("studentNo")String studentNo, @RequestParam("studentPassword") String studentPassword){
         ModelAndView mv = new ModelAndView();
         if (studentService.StuInspectionLogin(studentNo,studentPassword)){
             //当前学生用户信息
@@ -34,31 +36,39 @@ public class StudentController {
             System.out.println(student.toString());
             request.getSession().setAttribute("stuInfo",student);
             mv.addObject("stu",student);
-
             // 拿到当前用户所有的课程信息
-            List<Course> courseList = courseService.queryCourse(student.getClazzNo());
-            System.out.println(courseList.toString());
+            Clazz clazz = studentService.getClazzInfo(studentNo);
+            request.getSession().setAttribute("clazzInfo",clazz);
+            List<Course> courseList = courseService.queryCourse(clazz.getClazzNo());
             mv.addObject("course",courseList);
-            System.out.println("登录成功");
+            return Msg.success().add("student",student);
         }else{
-            System.out.println("登录失败");
+            return Msg.fail().add("student",null);
         }
-        return mv;
     }
 
     /*
         学生个人资料基本信息
      */
     @RequestMapping(value = "/StuInfo")
-    public String StuInfo(HttpServletRequest request){
+    public Msg StuInfo(HttpServletRequest request){
            Student student = (Student) request.getSession().getAttribute("stuInfo");
+           Clazz clazz = (Clazz) request.getSession().getAttribute("clazzInfo");
            String ans = "获取失败";
            if (student != null){
                ans = "获取成功，芜湖";
            }
            ModelAndView mv = new ModelAndView();
            mv.addObject("studentInfo",student);
-           return ans;
+           mv.addObject("clazz",clazz);
+           Msg msg = new Msg();
+           msg.add("student",student);
+           msg.add("clazz",clazz);
+           return Msg.success().add("msg",msg);
     }
+
+
+
+
 
 }

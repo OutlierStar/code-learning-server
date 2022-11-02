@@ -6,24 +6,29 @@ import lombok.Data;
 public class Student {
     @TableId(value = "student_id")
     private Integer studentId;
-
+    private String studentName;
+    private String studentPassword;
+    private Data studentBirth;
+    private String memo;
+    private String academyNo;
+    private String studentSex;
     private String studentNo;
 
-    private String studentName;
+    public String getAcademyNo() {
+        return academyNo;
+    }
 
-    private String studentPassword;
+    public void setAcademyNo(String academyNo) {
+        this.academyNo = academyNo;
+    }
 
-    private Data studentBirth;
+    public String getStudentSex() {
+        return studentSex;
+    }
 
-    private String memo;
-
-    private String clazzNo;
-
-    private String school;
-
-    private String major;
-
-
+    public void setStudentSex(String studentSex) {
+        this.studentSex = studentSex;
+    }
 
     public String getStudentName() {
         return studentName;
@@ -31,15 +36,6 @@ public class Student {
 
     public void setStudentName(String studentName) {
         this.studentName = studentName;
-    }
-
-
-    public String getSchool() {
-        return school;
-    }
-
-    public void setSchool(String school) {
-        this.school = school;
     }
 
     public int getStudentId() {
@@ -66,14 +62,6 @@ public class Student {
         this.studentPassword = studentPassword;
     }
 
-    public String getClazzNo() {
-        return clazzNo;
-    }
-
-    public void setClazzNo(String clazzNo) {
-        this.clazzNo = clazzNo;
-    }
-
     public String getMemo() {
         return memo;
     }
@@ -90,26 +78,17 @@ public class Student {
         this.studentBirth = studentBirth;
     }
 
-    public String getMajor() {
-        return major;
-    }
-
-    public void setMajor(String major) {
-        this.major = major;
-    }
-
     @Override
     public String toString() {
         return "Student{" +
                 "studentId=" + studentId +
-                ", studentNo='" + studentNo + '\'' +
                 ", studentName='" + studentName + '\'' +
                 ", studentPassword='" + studentPassword + '\'' +
                 ", studentBirth=" + studentBirth +
                 ", memo='" + memo + '\'' +
-                ", clazzNo='" + clazzNo + '\'' +
-                ", school='" + school + '\'' +
-                ", major='" + major + '\'' +
+                ", academyNo='" + academyNo + '\'' +
+                ", studentSex='" + studentSex + '\'' +
+                ", studentNo='" + studentNo + '\'' +
                 '}';
     }
 }

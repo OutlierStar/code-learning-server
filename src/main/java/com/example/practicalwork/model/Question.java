@@ -5,23 +5,30 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 @TableName("question")
 public class Question {
-    public Question(int itemId, String answer, int itemScore, String itemType, int id) {
-        this.itemId = itemId;
-        this.answer = answer;
-        this.itemScore = itemScore;
-        this.itemType = itemType;
+
+    @TableId(value = "id")
+    private Integer id;
+    private Integer setId;
+    private String answer;
+    private String content;
+    private Integer score;
+    private String type;
+    private String questionOptions;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Question() {
+    public Integer getSetId() {
+        return setId;
     }
 
-    public Integer getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(Integer itemId) {
-        this.itemId = itemId;
+    public void setSetId(Integer setId) {
+        this.setId = setId;
     }
 
     public String getAnswer() {
@@ -32,46 +39,48 @@ public class Question {
         this.answer = answer;
     }
 
-    public Integer getItemScore() {
-        return itemScore;
+    public String getContent() {
+        return content;
     }
 
-    public void setItemScore(Integer itemScore) {
-        this.itemScore = itemScore;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public String getItemType() {
-        return itemType;
+    public Integer getScore() {
+        return score;
     }
 
-    public void setItemType(String itemType) {
-        this.itemType = itemType;
+    public void setScore(Integer score) {
+        this.score = score;
     }
 
-    public Integer getId() {
-        return id;
+    public String getType() {
+        return type;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setType(String type) {
+        this.type = type;
     }
-    @TableId
-    private Integer itemId;
-    private String answer;
-    private  Integer itemScore;
-    private String itemType;
 
-    private Integer id;
+    public String getQuestionOptions() {
+        return questionOptions;
+    }
 
+    public void setQuestionOptions(String questionOptions) {
+        this.questionOptions = questionOptions;
+    }
 
     @Override
     public String toString() {
         return "Question{" +
-                "itemId=" + itemId +
+                "id=" + id +
+                ", setId=" + setId +
                 ", answer='" + answer + '\'' +
-                ", itemScore=" + itemScore +
-                ", itemType='" + itemType + '\'' +
-                ", id=" + id +
+                ", content='" + content + '\'' +
+                ", score=" + score +
+                ", type='" + type + '\'' +
+                ", questionOptions='" + questionOptions + '\'' +
                 '}';
     }
 }

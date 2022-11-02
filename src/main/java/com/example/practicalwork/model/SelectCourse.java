@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 
 public class SelectCourse {
 
+
     private Integer courseId;
     private String clazzNo;
     public int getCourseId() {

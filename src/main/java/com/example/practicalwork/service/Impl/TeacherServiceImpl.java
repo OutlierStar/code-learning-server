@@ -12,6 +12,10 @@ import org.springframework.stereotype.Service;
 public class TeacherServiceImpl implements TeacherService {
     @Autowired
     private TeacherMapper teacherMapper;
+
+   /*
+        判断老师用户是否登录成功
+    */
     @Override
     public boolean TeacherInspectionLogin(String TeacherNo, String password) {
         Teacher teacher = getTeacher(TeacherNo);
@@ -23,6 +27,9 @@ public class TeacherServiceImpl implements TeacherService {
         }
     }
 
+    /*
+       获取老师的个人信息
+    */
     @Override
     public Teacher getTeacher(String teacherNo) {
         QueryWrapper<Teacher> qw = new QueryWrapper<>();

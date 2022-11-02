@@ -3,9 +3,7 @@ package com.example.practicalwork.model;
 import com.baomidou.mybatisplus.annotation.TableId;
 
 public class Teacher {
-    @TableId("teacherId")
-
-    private Integer teacherId;
+    @TableId("teacher_no")
 
     private String teacherNo;
 
@@ -13,17 +11,13 @@ public class Teacher {
 
     private String teacherPassword;
 
-    private String departmentNo;
+    private String academyNo;
 
     private String memo;
 
-    public int getTeacherId() {
-        return teacherId;
-    }
+    private String teacherAge;
 
-    public void setTeacherId(int teacherId) {
-        this.teacherId = teacherId;
-    }
+    private String teacherSex;
 
     public String getTeacherNo() {
         return teacherNo;
@@ -49,14 +43,6 @@ public class Teacher {
         this.teacherPassword = teacherPassword;
     }
 
-    public String getDepartmentNo() {
-        return departmentNo;
-    }
-
-    public void setDepartmentNo(String departmentNo) {
-        this.departmentNo = departmentNo;
-    }
-
     public String getMemo() {
         return memo;
     }
@@ -65,15 +51,40 @@ public class Teacher {
         this.memo = memo;
     }
 
+    public String getAcademyNo() {
+        return academyNo;
+    }
+
+    public void setAcademyNo(String academyNo) {
+        this.academyNo = academyNo;
+    }
+
+    public String getTeacherAge() {
+        return teacherAge;
+    }
+
+    public void setTeacherAge(String teacherAge) {
+        this.teacherAge = teacherAge;
+    }
+
+    public String getTeacherSex() {
+        return teacherSex;
+    }
+
+    public void setTeacherSex(String teacherSex) {
+        this.teacherSex = teacherSex;
+    }
+
     @Override
     public String toString() {
         return "Teacher{" +
-                "teacherId=" + teacherId +
-                ", teacherNo='" + teacherNo + '\'' +
+                "teacherNo='" + teacherNo + '\'' +
                 ", teacherName='" + teacherName + '\'' +
                 ", teacherPassword='" + teacherPassword + '\'' +
-                ", departmentNo='" + departmentNo + '\'' +
+                ", academyNo='" + academyNo + '\'' +
                 ", memo='" + memo + '\'' +
+                ", teacherAge='" + teacherAge + '\'' +
+                ", teacherSex='" + teacherSex + '\'' +
                 '}';
     }
 }

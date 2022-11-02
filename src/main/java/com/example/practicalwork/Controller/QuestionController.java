@@ -1,8 +1,12 @@
 package com.example.practicalwork.Controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.example.practicalwork.model.Question;
-import com.example.practicalwork.model.QuestionSet;
+import com.example.practicalwork.Mapper.AnswerSetMapper;
+import com.example.practicalwork.Mapper.QuestionMapper;
+import com.example.practicalwork.Mapper.QuestionSetMapper;
+import com.example.practicalwork.model.*;
+import com.example.practicalwork.service.Impl.AnswerServiceImpl;
+import com.example.practicalwork.service.Impl.Msg;
 import com.example.practicalwork.service.Impl.QuestionServiceImpl;
 import com.example.practicalwork.service.Impl.StudentServiceImpl;
 import com.example.practicalwork.service.QuestionService;
@@ -15,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.SimpleFormatter;
@@ -27,6 +33,8 @@ public class QuestionController {
     @Autowired
     private QuestionService questionService;
 
+    @Autowired
+    private AnswerServiceImpl answerService;
     /*
            老师发布一个作业
            传入一个习题集对象
@@ -36,37 +44,69 @@ public class QuestionController {
         return questionService.creatQuestionSet(questionSet);
     }
 
-    /*
-            获取当前课程所有的题目集
-     */
-    @RequestMapping(value = "/showQuestionSet")
-    public String showQuestionSet(@RequestParam("courseId") int courseId){
-        List<QuestionSet> questionSetList = questionService.getQueSets(courseId);
 
-        String flag = "获取失败";
-        if (questionSetList != null) flag = "获取成功";
+    /*
+        获取当前课程的作业列表
+     */
+    @RequestMapping(value = "/IntoQuestionSetInfo")
+    public Msg IntoQuestionSetInfo(HttpServletRequest request, @RequestParam("courseId") Integer courseId){
+        Clazz clazz = (Clazz) request.getSession().getAttribute("clazzInfo");
+        List<QuestionSet> questionSetList = questionService.getQueSets(courseId, clazz);
 
         ModelAndView mv = new ModelAndView();
         mv.addObject("questSetList",questionSetList);
-        System.out.println(questionSetList);
-        return flag;
+        return Msg.success().add("questionSets",questionSetList);
     }
+
 
     
     /*
             获取当前题目集的所有题目
      */
     @RequestMapping(value = "/showAllQuestions")
-    public String showAllQuestions(@RequestParam("itemId") int itemId){
-        List<Question> questionList = questionService.getAllQuestions(itemId);
+    public Msg showAllQuestions(HttpServletRequest request,@RequestParam("setId") int setId){
+        List<Question> questionList = questionService.getAllQuestions(setId);
 
-        String flag = "获取失败";
-        if (questionList != null) flag = "获取成功";
+        Student student = (Student) request.getSession().getAttribute("stu");
 
         ModelAndView mv = new ModelAndView();
         mv.addObject("questionsList",questionList);
-        System.out.println(questionList);
 
-        return flag;
+        if (answerService.judgeFirstAns(student.getStudentId(),setId) == null){
+            Date date = new Date();
+            AnswerSet answerSet = new AnswerSet();
+            answerSet.setAnswerSerId(0);
+            answerSet.setSetId(setId);
+            answerSet.setStudentId(student.getStudentId());
+            answerSet.setAnswerTime(date);
+            answerSet.setSubmitTime(null);
+            answerSet.setScore(null);
+            answerSet.setIsAnswered(0);
+            answerSet.setIsSubmit(0);
+            answerService.getAnswerSet(answerSet);
+            request.getSession().setAttribute("ansSet",answerSet);
+        }else{
+            request.getSession().setAttribute("ansSet",answerService.judgeFirstAns(student.getStudentId(),setId));
+        }
+
+        return Msg.success().add("questions",questionList);
     }
+
+    /*
+        获取学生提交的答卷
+     */
+    @RequestMapping(value = "/creatStuAnsSet")
+    public Msg getStuAnsSet(HttpServletRequest request,List<String> StuAnswers){
+        AnswerSet answerSet = (AnswerSet) request.getSession().getAttribute("ansSet");
+        List<Question> questionList = questionService.getAllQuestions(answerSet.getSetId());
+        Msg msg = new Msg();
+        int i = 0;
+        for (String answer : StuAnswers){
+            msg.add(answer,answerService.getAnswers(answer,
+                    answerSet.getAnswerSerId(),questionList.get(i).getId()));
+            i++;
+        }
+        return Msg.success().add("msg",msg);
+    }
+
 }

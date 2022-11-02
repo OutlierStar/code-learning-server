@@ -5,6 +5,9 @@ import com.example.practicalwork.model.Course;
 import java.util.List;
 
 public interface CourseService {
+    //获取当前班级的全部课程
     List<Course> queryCourse(String clazzNO);
+    //老师添加课程
     void addCourse(Course course);
+
 }

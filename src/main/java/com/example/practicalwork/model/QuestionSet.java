@@ -10,10 +10,6 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
- * <p>
- * 
- * </p>
- *
  * @author 喻涛
  * @since 2022-10-22
  */
@@ -24,10 +20,10 @@ public class QuestionSet implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "item_id", type = IdType.AUTO)
-    private Integer itemId;
+    @TableId(value = "set_id", type = IdType.AUTO)
+    private Integer setId;
 
-    private String itemName;
+    private String setName;
 
     private Date startTime;
 
@@ -39,24 +35,34 @@ public class QuestionSet implements Serializable {
 
     private Integer courseId;
 
+    private String clazz_no;
+
+    public String getClazz_no() {
+        return clazz_no;
+    }
+
+    public void setClazz_no(String clazz_no) {
+        this.clazz_no = clazz_no;
+    }
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
 
-    public Integer getItemId() {
-        return itemId;
+    public Integer getSetId() {
+        return setId;
     }
 
-    public void setItemId(Integer itemId) {
-        this.itemId = itemId;
+    public void setSetId(Integer setId) {
+        this.setId = setId;
     }
 
-    public String getItemName() {
-        return itemName;
+    public String getSetName() {
+        return setName;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
+    public void setSetName(String setName) {
+        this.setName = setName;
     }
 
     public Date getStartTime() {
@@ -99,4 +105,17 @@ public class QuestionSet implements Serializable {
         this.courseId = courseId;
     }
 
+    @Override
+    public String toString() {
+        return "QuestionSet{" +
+                "setId=" + setId +
+                ", setName='" + setName + '\'' +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", totalScore=" + totalScore +
+                ", totalItems=" + totalItems +
+                ", courseId=" + courseId +
+                ", clazz_no='" + clazz_no + '\'' +
+                '}';
+    }
 }

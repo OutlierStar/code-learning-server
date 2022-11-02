@@ -7,7 +7,7 @@ import java.util.Date;
 
 @TableName("t_student_item")
 public class TStudentItem {
-    @TableId("studentItemId")
+    @TableId("student_item_Id")
     private Integer studentItemId;
     private Integer studentId;
     private Integer itemId;
