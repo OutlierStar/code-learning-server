@@ -1,9 +1,16 @@
 package com.example.practicalwork.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
+@Data
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
 public class Student {
+    @TableField("student")
     @TableId(value = "student_id")
     private Integer studentId;
     private String studentName;
@@ -13,6 +20,7 @@ public class Student {
     private String academyNo;
     private String studentSex;
     private String studentNo;
+    private String clazzNo;
 
     public String getAcademyNo() {
         return academyNo;
@@ -78,6 +86,14 @@ public class Student {
         this.studentBirth = studentBirth;
     }
 
+    public String getClazzNo() {
+        return clazzNo;
+    }
+
+    public void setClazzNo(String clazzNo) {
+        this.clazzNo = clazzNo;
+    }
+
     @Override
     public String toString() {
         return "Student{" +
@@ -89,6 +105,7 @@ public class Student {
                 ", academyNo='" + academyNo + '\'' +
                 ", studentSex='" + studentSex + '\'' +
                 ", studentNo='" + studentNo + '\'' +
+                ", clazzNo='" + clazzNo + '\'' +
                 '}';
     }
 }

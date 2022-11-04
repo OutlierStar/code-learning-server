@@ -35,14 +35,7 @@ public class QuestionController {
 
     @Autowired
     private AnswerServiceImpl answerService;
-    /*
-           老师发布一个作业
-           传入一个习题集对象
-     */
-    @RequestMapping(value = "/creatQuestionSet")
-    public String creatQuestionSet(@RequestBody QuestionSet questionSet){
-        return questionService.creatQuestionSet(questionSet);
-    }
+
 
 
     /*
@@ -50,8 +43,8 @@ public class QuestionController {
      */
     @RequestMapping(value = "/IntoQuestionSetInfo")
     public Msg IntoQuestionSetInfo(HttpServletRequest request, @RequestParam("courseId") Integer courseId){
-        Clazz clazz = (Clazz) request.getSession().getAttribute("clazzInfo");
-        List<QuestionSet> questionSetList = questionService.getQueSets(courseId, clazz);
+        String clazzNO = (String) request.getSession().getAttribute("clazzNo");
+        List<QuestionSet> questionSetList = questionService.getQueSets(courseId, clazzNO);
 
         ModelAndView mv = new ModelAndView();
         mv.addObject("questSetList",questionSetList);
@@ -59,7 +52,6 @@ public class QuestionController {
     }
 
 
-    
     /*
             获取当前题目集的所有题目
      */
@@ -72,23 +64,22 @@ public class QuestionController {
         ModelAndView mv = new ModelAndView();
         mv.addObject("questionsList",questionList);
 
-        if (answerService.judgeFirstAns(student.getStudentId(),setId) == null){
-            Date date = new Date();
-            AnswerSet answerSet = new AnswerSet();
-            answerSet.setAnswerSerId(0);
-            answerSet.setSetId(setId);
-            answerSet.setStudentId(student.getStudentId());
-            answerSet.setAnswerTime(date);
-            answerSet.setSubmitTime(null);
-            answerSet.setScore(null);
-            answerSet.setIsAnswered(0);
-            answerSet.setIsSubmit(0);
-            answerService.getAnswerSet(answerSet);
-            request.getSession().setAttribute("ansSet",answerSet);
-        }else{
-            request.getSession().setAttribute("ansSet",answerService.judgeFirstAns(student.getStudentId(),setId));
-        }
-
+//        if (answerService.judgeFirstAns(student.getStudentId(),setId)){
+//            Date date = new Date();
+//            AnswerSet answerSet = new AnswerSet();
+//            answerSet.setAnswerSerId(0);
+//            answerSet.setSetId(setId);
+//            answerSet.setStudentId(student.getStudentId());
+//            answerSet.setAnswerTime(date);
+//            answerSet.setSubmitTime(null);
+//            answerSet.setScore(null);
+//            answerSet.setIsAnswered(0);
+//            answerSet.setIsSubmit(0);
+//            answerService.getAnswerSet(answerSet);
+//            request.getSession().setAttribute("ansSet",answerSet);
+//        }else{
+//            request.getSession().setAttribute("ansSet",answerService.judgeFirstAns(student.getStudentId(),setId));
+//        }
         return Msg.success().add("questions",questionList);
     }
 

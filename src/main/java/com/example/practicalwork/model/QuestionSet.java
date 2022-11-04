@@ -2,6 +2,8 @@ package com.example.practicalwork.model;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.Version;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
@@ -35,14 +37,14 @@ public class QuestionSet implements Serializable {
 
     private Integer courseId;
 
-    private String clazz_no;
+    private String clazzNo;
 
-    public String getClazz_no() {
-        return clazz_no;
+    public String getClazzNo() {
+        return clazzNo;
     }
 
-    public void setClazz_no(String clazz_no) {
-        this.clazz_no = clazz_no;
+    public void setClazzNo(String clazzNo) {
+        this.clazzNo = clazzNo;
     }
 
     public static long getSerialVersionUID() {
@@ -115,7 +117,7 @@ public class QuestionSet implements Serializable {
                 ", totalScore=" + totalScore +
                 ", totalItems=" + totalItems +
                 ", courseId=" + courseId +
-                ", clazz_no='" + clazz_no + '\'' +
+                ", clazzNo='" + clazzNo + '\'' +
                 '}';
     }
 }

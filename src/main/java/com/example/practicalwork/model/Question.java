@@ -1,5 +1,6 @@
 package com.example.practicalwork.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -13,6 +14,7 @@ public class Question {
     private String content;
     private Integer score;
     private String type;
+    @TableField(value = "question_options")
     private String questionOptions;
 
     public Integer getId() {

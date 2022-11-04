@@ -24,14 +24,14 @@ public class AnswerServiceImpl implements AnswerService {
     QuestionMapper questionMapper;
 
     @Override
-    public AnswerSet judgeFirstAns(Integer stuId, Integer setId) {
+    public boolean judgeFirstAns(Integer stuId, Integer setId) {
         Map<String,Object> map = new HashMap<>();
         map.put("student_id",stuId);
         map.put("set_id",setId);
         QueryWrapper<AnswerSet> queryWrapper = new QueryWrapper<>();
         QueryWrapper<AnswerSet> qwAnsSet = queryWrapper.allEq(map);
 
-        return answerSetMapper.selectOne(qwAnsSet) ;
+        return answerSetMapper.selectOne(qwAnsSet) == null ;
     }
 
     /*
@@ -160,8 +160,6 @@ public class AnswerServiceImpl implements AnswerService {
         int sum = 0;
         QueryWrapper<Question> queWrapperOne = new QueryWrapper<>();
         QueryWrapper<Answer> queWrapperTwo = new QueryWrapper<>();
-
-
 
         for (Answer answer : answerList){
             QueryWrapper<Question> standardAns = queWrapperOne.eq("id",answer.getQuestionId());

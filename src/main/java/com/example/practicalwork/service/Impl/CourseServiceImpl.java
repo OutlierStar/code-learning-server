@@ -30,6 +30,7 @@ public class CourseServiceImpl implements CourseService {
         QueryWrapper<SelectCourse> qSelCourse = new QueryWrapper<>();
         QueryWrapper<SelectCourse> selCourse = qSelCourse.eq("clazz_no",clazzNO);
         List<SelectCourse> selectCourses = selectCourseMapper.selectList(selCourse);
+        System.out.println(selCourse.toString());
 
         QueryWrapper<Course> qCourse = new QueryWrapper<>();
         for (SelectCourse selectCourse : selectCourses){

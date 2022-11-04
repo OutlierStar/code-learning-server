@@ -10,10 +10,9 @@ import java.util.List;
 public interface QuestionService {
     //添加题目
     Msg addQuestion(List<Question> questionList);
-    //创建题目集
-    String creatQuestionSet(QuestionSet questionSet);
+
     //获取课程的已发布的题目集
-    List<QuestionSet> getQueSets(Integer courseId, Clazz clazz);
+    List<QuestionSet> getQueSets(Integer courseId,String clazzNo);
     //获取当前题目集中的所有题目
     List<Question> getAllQuestions(Integer itemId);
 

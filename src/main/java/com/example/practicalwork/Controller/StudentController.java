@@ -24,10 +24,11 @@ public class StudentController {
     @Autowired
     private CourseService courseService;
 
+
     /*
         获取学生主页展示信息
      */
-    @RequestMapping(value = "/StuHomePage")
+    @RequestMapping(value = "/index/login")
     public Msg Loginto(HttpServletRequest request, @RequestParam("studentNo")String studentNo, @RequestParam("studentPassword") String studentPassword){
         ModelAndView mv = new ModelAndView();
         if (studentService.StuInspectionLogin(studentNo,studentPassword)){
@@ -36,39 +37,33 @@ public class StudentController {
             System.out.println(student.toString());
             request.getSession().setAttribute("stuInfo",student);
             mv.addObject("stu",student);
+
             // 拿到当前用户所有的课程信息
-            Clazz clazz = studentService.getClazzInfo(studentNo);
-            request.getSession().setAttribute("clazzInfo",clazz);
-            List<Course> courseList = courseService.queryCourse(clazz.getClazzNo());
+
+            request.getSession().setAttribute("clazzNo",student.getClazzNo());
+            List<Course> courseList = courseService.queryCourse(student.getClazzNo());
             mv.addObject("course",courseList);
-            return Msg.success().add("student",student);
+            System.out.println(courseList.toString());
+            return Msg.success().add("student",student).add("course",courseList);
         }else{
             return Msg.fail().add("student",null);
         }
     }
 
     /*
-        学生个人资料基本信息
+         学生个人资料基本信息
      */
-    @RequestMapping(value = "/StuInfo")
+    @RequestMapping(value = "/student/get")
     public Msg StuInfo(HttpServletRequest request){
            Student student = (Student) request.getSession().getAttribute("stuInfo");
-           Clazz clazz = (Clazz) request.getSession().getAttribute("clazzInfo");
            String ans = "获取失败";
            if (student != null){
                ans = "获取成功，芜湖";
            }
            ModelAndView mv = new ModelAndView();
            mv.addObject("studentInfo",student);
-           mv.addObject("clazz",clazz);
-           Msg msg = new Msg();
-           msg.add("student",student);
-           msg.add("clazz",clazz);
-           return Msg.success().add("msg",msg);
+           return Msg.success().add("student",student);
     }
-
-
-
 
 
 }

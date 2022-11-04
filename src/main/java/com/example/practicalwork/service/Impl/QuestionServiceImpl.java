@@ -25,18 +25,6 @@ public class QuestionServiceImpl implements QuestionService {
     @Autowired
     QuestionMapper questionMapper;
 
-    /*
-        创建一个题目集
-     */
-    @Override
-    public String creatQuestionSet(QuestionSet queSet) {
-        System.out.println(queSet.toString());
-        int count = questionSetMapper.insert(queSet);
-        if (count > 0){
-            return "添加成功";
-        }return "添加失败";
-    }
-
 
     /*
         插入题目集中的所有题目
@@ -58,10 +46,10 @@ public class QuestionServiceImpl implements QuestionService {
         通过课程id和班级号获得获取该课程发布的所有题目集
      */
     @Override
-    public List<QuestionSet> getQueSets(Integer courseId,Clazz clazz) {
+    public List<QuestionSet> getQueSets(Integer courseId,String clazzNo) {
         Map<String,Object> map = new HashMap<>();
         map.put("course_id",courseId);
-        map.put("clazz_no",clazz.getClazzNo());
+        map.put("clazz_no",clazzNo);
 
         QueryWrapper<QuestionSet> qw = new QueryWrapper<>();
         QueryWrapper<QuestionSet> qwSet = qw.allEq(map);
@@ -80,7 +68,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public List<Question> getAllQuestions(Integer setId) {
         QueryWrapper<Question> queryWrapper = new QueryWrapper<>();
-        QueryWrapper<Question> queryQuestion = queryWrapper.eq("setId",setId);
+        QueryWrapper<Question> queryQuestion = queryWrapper.eq("set_id",setId);
 
         return questionMapper.selectList(queryQuestion);
     }

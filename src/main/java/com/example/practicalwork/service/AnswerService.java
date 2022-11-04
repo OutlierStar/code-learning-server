@@ -12,7 +12,7 @@ public interface AnswerService {
     /*
         判断是否是第一次作答
      */
-    AnswerSet judgeFirstAns(Integer stuId,Integer setId);
+    boolean judgeFirstAns(Integer stuId,Integer setId);
 
     /*
         插入一份新的答卷

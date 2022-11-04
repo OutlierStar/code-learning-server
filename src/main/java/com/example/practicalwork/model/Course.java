@@ -1,7 +1,9 @@
 package com.example.practicalwork.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-
+import com.baomidou.mybatisplus.annotation.TableName;
+@TableName("course")
 public class Course {
     @TableId(value = "course_id")
     private Integer courseId;
@@ -10,6 +12,7 @@ public class Course {
     private String Memo;
     private String courseDate;
     private String invitationCode;
+    @TableField(value = "clazz_no")
     private String clazzNO;
 
     @Override
@@ -25,13 +28,7 @@ public class Course {
                 '}';
     }
 
-    public String getClazzNO() {
-        return clazzNO;
-    }
 
-    public void setClazzNO(String clazzNO) {
-        this.clazzNO = clazzNO;
-    }
 
     public String getInvitationCode() {
         return invitationCode;
@@ -79,6 +76,14 @@ public class Course {
 
     public void setCourseDate(String courseDate) {
         this.courseDate = courseDate;
+    }
+
+    public String getClazzNO() {
+        return clazzNO;
+    }
+
+    public void setClazzNO(String clazzNO) {
+        this.clazzNO = clazzNO;
     }
 
 }
