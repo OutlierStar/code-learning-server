@@ -1,6 +1,7 @@
 package com.example.practicalwork.service;
 
 import com.example.practicalwork.model.AnswerSet;
+import com.example.practicalwork.model.Course;
 import com.example.practicalwork.model.QuestionSet;
 import com.example.practicalwork.model.Teacher;
 
@@ -13,4 +14,6 @@ public interface TeacherService {
     boolean creatQueSet(QuestionSet questionSet);
     //生成对应题目集学生的答卷
     List<AnswerSet> creatStuAnsSets(Integer setId, String clazzNo);
+    //开设一门课程
+    boolean creatCourseToClazz(Course course);
 }

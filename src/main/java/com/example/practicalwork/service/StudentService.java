@@ -4,6 +4,8 @@ import com.example.practicalwork.model.Clazz;
 import com.example.practicalwork.model.QuestionSet;
 import com.example.practicalwork.model.Student;
 
+import java.util.List;
+
 public interface StudentService {
     //学生登录
     boolean StuInspectionLogin(String StuNo, String password);
@@ -11,4 +13,7 @@ public interface StudentService {
     Student getOneStu(String StuNo);
     //获取学生所在班级信息
     Clazz getClazzInfo(String StuNo);
+    //通过课程号获取选择该课程的班级列表
+    List<Clazz> getClazzNo(Integer courseId);
+
 }

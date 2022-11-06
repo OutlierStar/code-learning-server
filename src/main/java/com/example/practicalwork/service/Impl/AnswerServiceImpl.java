@@ -64,12 +64,21 @@ public class AnswerServiceImpl implements AnswerService {
         answer.setAnswerSerId(answerSetId);
         answer.setQuestionId(questionId);
         answer.setAnswer(oneAnswer);
-        answer.setIsAnswer(1);
+        answer.setIsAnswered(1);
         answer.setScore(null);
         answer.setIsRead(0);
         answerMapper.insert(answer);
 
         return answer;
+    }
+
+    @Override
+    public AnswerSet getStuAnswerSet(Integer setId, Integer studentId) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("set_id",setId);
+        map.put("student_id",studentId);
+        QueryWrapper<AnswerSet> queryWrapper = new QueryWrapper<>();
+        return answerSetMapper.selectOne(queryWrapper.allEq(map));
     }
 
     /*
@@ -90,7 +99,6 @@ public class AnswerServiceImpl implements AnswerService {
         QueryWrapper<Answer> ans = queWrapperTwo.eq("answer_set_id",answerSet.getAnswerSerId());
         List<Answer> answerList = answerMapper.selectList(ans);
 
-
         QueryWrapper<Question> queWrapperThree = new QueryWrapper<>();
         QueryWrapper<Question> standardAns = queWrapperThree.eq("set_id",setId);
         List<Question> questionList = questionMapper.selectList(standardAns);
@@ -98,8 +106,6 @@ public class AnswerServiceImpl implements AnswerService {
         QueryWrapper<Answer> queWrapperFour = new QueryWrapper<>();
 
         QueryWrapper<Answer> queryWrapperFive = new QueryWrapper<>();
-
-
 
         List<Answer> ChoiceAnswerList = new ArrayList<>();
         List<Answer> CompletionAnswerList = new ArrayList<>();
@@ -166,7 +172,7 @@ public class AnswerServiceImpl implements AnswerService {
             Question question = questionMapper.selectOne(standardAns);
             Map<String,Object> map = new HashMap<>();
 
-            if (answer.getIsAnswer()==1){
+            if (answer.getIsAnswered()==1){
                 if (answer.getAnswer().equals(question.getAnswer())){
                     answer.setScore(question.getScore());
                     answer.setIsRead(1);
@@ -197,7 +203,7 @@ public class AnswerServiceImpl implements AnswerService {
             Question question = questionMapper.selectOne(standardAns);
             Map<String,Object> map = new HashMap<>();
 
-            if (answer.getIsAnswer() == 1){
+            if (answer.getIsAnswered() == 1){
                 String[] stuAns = answer.getAnswer().split(",");
                 String[] queAns = question.getAnswer().split(",");
 
@@ -233,5 +239,36 @@ public class AnswerServiceImpl implements AnswerService {
         return sum;
     }
 
-
+    /*
+               教师判分
+         */
+    @Override
+    public boolean Award(Integer answerId, Integer questionId, Integer score) {
+        QueryWrapper<Answer> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("answer_set_id",answerId);
+        queryWrapper.eq("question_id",questionId);
+        Answer answer = answerMapper.selectOne(queryWrapper);
+        answer.setScore(score);
+        int count = answerMapper.update(answer,queryWrapper);
+        return count >0;
+    }
+    /*
+    算总分
+     */
+    @Override
+    public boolean CountTotalScore(Integer answerSetId) {
+        QueryWrapper<Answer> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("answer_set_id",answerSetId);
+        List<Answer> answers = answerMapper.selectList(queryWrapper);
+        int total = 0;
+        for(Answer answer :answers){
+            total += answer.getScore();
+        }
+        QueryWrapper<AnswerSet> wrapper = new QueryWrapper<>();
+        wrapper.eq("answer_set_id",answerSetId);
+        AnswerSet answerSet = answerSetMapper.selectOne(wrapper);
+        answerSet.setScore(total);
+        int count = answerSetMapper.update(answerSet,wrapper);
+        return count>0;
+    }
 }

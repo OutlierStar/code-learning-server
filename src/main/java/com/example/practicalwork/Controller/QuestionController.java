@@ -42,10 +42,8 @@ public class QuestionController {
         获取当前课程的作业列表
      */
     @RequestMapping(value = "/IntoQuestionSetInfo")
-    public Msg IntoQuestionSetInfo(HttpServletRequest request, @RequestParam("courseId") Integer courseId){
-        String clazzNO = (String) request.getSession().getAttribute("clazzNo");
-        List<QuestionSet> questionSetList = questionService.getQueSets(courseId, clazzNO);
-
+    public Msg IntoQuestionSetInfo( @RequestParam("courseId") Integer courseId){
+        List<QuestionSet> questionSetList = questionService.getQueSets(courseId);
         ModelAndView mv = new ModelAndView();
         mv.addObject("questSetList",questionSetList);
         return Msg.success().add("questionSets",questionSetList);
@@ -59,37 +57,26 @@ public class QuestionController {
     public Msg showAllQuestions(HttpServletRequest request,@RequestParam("setId") int setId){
         List<Question> questionList = questionService.getAllQuestions(setId);
 
-        Student student = (Student) request.getSession().getAttribute("stu");
-
+        request.getSession().setAttribute("setId",setId);
         ModelAndView mv = new ModelAndView();
         mv.addObject("questionsList",questionList);
 
-//        if (answerService.judgeFirstAns(student.getStudentId(),setId)){
-//            Date date = new Date();
-//            AnswerSet answerSet = new AnswerSet();
-//            answerSet.setAnswerSerId(0);
-//            answerSet.setSetId(setId);
-//            answerSet.setStudentId(student.getStudentId());
-//            answerSet.setAnswerTime(date);
-//            answerSet.setSubmitTime(null);
-//            answerSet.setScore(null);
-//            answerSet.setIsAnswered(0);
-//            answerSet.setIsSubmit(0);
-//            answerService.getAnswerSet(answerSet);
-//            request.getSession().setAttribute("ansSet",answerSet);
-//        }else{
-//            request.getSession().setAttribute("ansSet",answerService.judgeFirstAns(student.getStudentId(),setId));
-//        }
         return Msg.success().add("questions",questionList);
     }
 
     /*
-        获取学生提交的答卷
+        将学生提交的答案插入答案表
      */
     @RequestMapping(value = "/creatStuAnsSet")
-    public Msg getStuAnsSet(HttpServletRequest request,List<String> StuAnswers){
-        AnswerSet answerSet = (AnswerSet) request.getSession().getAttribute("ansSet");
-        List<Question> questionList = questionService.getAllQuestions(answerSet.getSetId());
+    public Msg getStuAnsSet(HttpServletRequest request,@RequestBody List<String> StuAnswers,
+                            @RequestParam("setId") Integer setId,@RequestParam("studentId") Integer studentId){
+//        Integer setId = (Integer) request.getSession().getAttribute("setId");
+
+        System.out.println(setId);
+        System.out.println(studentId);
+        List<Question> questionList = questionService.getAllQuestions(setId);
+//        Student student = (Student) request.getSession().getAttribute("stuInfo");
+        AnswerSet answerSet = answerService.getStuAnswerSet(setId,studentId);
         Msg msg = new Msg();
         int i = 0;
         for (String answer : StuAnswers){

@@ -1,11 +1,12 @@
 package com.example.practicalwork.model;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 @TableName("course")
 public class Course {
-    @TableId(value = "course_id")
+    @TableId(value = "course_id",type = IdType.AUTO)
     private Integer courseId;
     private String teacherNo;
     private String courseName;

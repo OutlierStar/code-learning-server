@@ -1,5 +1,6 @@
 package com.example.practicalwork.model;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
@@ -13,14 +14,12 @@ import java.util.Date;
 @Accessors(chain = true)
 public class AnswerSet {
     @TableField("answer_set")
-    @TableId(value = "answer_set_id")
+    @TableId(value = "answer_set_id",type = IdType.AUTO)
     private Integer answerSerId;
     private Integer SetId;
     private Integer studentId;
     private Date submitTime;
     private Date answerTime;
-    private String answer;
-    private Integer isAnswered;
     private Integer score;
     private Integer isSubmit;
     private Integer isRead;
@@ -66,21 +65,7 @@ public class AnswerSet {
         this.answerTime = answerTime;
     }
 
-    public String getAnswer() {
-        return answer;
-    }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
-    }
-
-    public Integer getIsAnswered() {
-        return isAnswered;
-    }
-
-    public void setIsAnswered(Integer isAnswered) {
-        this.isAnswered = isAnswered;
-    }
 
     public Integer getScore() {
         return score;
@@ -114,8 +99,6 @@ public class AnswerSet {
                 ", studentId=" + studentId +
                 ", submitTime=" + submitTime +
                 ", answerTime=" + answerTime +
-                ", answer='" + answer + '\'' +
-                ", isAnswered=" + isAnswered +
                 ", score=" + score +
                 ", isSubmit=" + isSubmit +
                 ", isRead=" + isRead +
