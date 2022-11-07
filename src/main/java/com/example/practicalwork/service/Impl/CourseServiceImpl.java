@@ -41,6 +41,14 @@ public class CourseServiceImpl implements CourseService {
         return courseList;
     }
 
+    /*
+        获取当前老师所授全部课程
+     */
+    @Override
+    public List<Course> getTeacherCourse(String teacherNo){
+        QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
+        return courseMapper.selectList(queryWrapper.eq("teacher_no",teacherNo));
+    }
 
 
     @Override

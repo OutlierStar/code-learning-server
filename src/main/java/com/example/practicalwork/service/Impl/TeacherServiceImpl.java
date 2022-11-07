@@ -1,14 +1,8 @@
 package com.example.practicalwork.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.example.practicalwork.Mapper.AnswerSetMapper;
-import com.example.practicalwork.Mapper.QuestionSetMapper;
-import com.example.practicalwork.Mapper.StudentMapper;
-import com.example.practicalwork.Mapper.TeacherMapper;
-import com.example.practicalwork.model.AnswerSet;
-import com.example.practicalwork.model.QuestionSet;
-import com.example.practicalwork.model.Student;
-import com.example.practicalwork.model.Teacher;
+import com.example.practicalwork.Mapper.*;
+import com.example.practicalwork.model.*;
 import com.example.practicalwork.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +24,12 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Autowired
     private StudentMapper studentMapper;
+
+    @Autowired
+    private AnswerMapper answerMapper;
+
+    @Autowired
+    private CourseMapper courseMapper;
    /*
         判断老师用户是否登录成功
     */
@@ -51,8 +51,7 @@ public class TeacherServiceImpl implements TeacherService {
     public Teacher getTeacher(String teacherNo) {
         QueryWrapper<Teacher> qw = new QueryWrapper<>();
         QueryWrapper<Teacher> no = qw.eq("teacher_no",teacherNo);
-        Teacher teacher = teacherMapper.selectOne(no);
-        return teacher;
+        return teacherMapper.selectOne(no);
     }
 
     /*
@@ -76,8 +75,6 @@ public class TeacherServiceImpl implements TeacherService {
        List<Student> studentList = studentMapper.selectList(queStudents);
 
        List<AnswerSet> arrayList = new ArrayList<>();
-
-       int count = 0;
        for (Student student : studentList){
            AnswerSet answerSet = new AnswerSet();
            answerSet.setAnswerSerId(0);
@@ -93,6 +90,14 @@ public class TeacherServiceImpl implements TeacherService {
            arrayList.add(answerSet);
        }
         return arrayList;
+    }
+
+    /*
+        老师开设一门课程
+     */
+    @Override
+    public boolean creatCourseToClazz(Course course) {
+        return courseMapper.insert(course)>0;
     }
 
 

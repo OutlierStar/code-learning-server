@@ -10,6 +10,8 @@ import com.example.practicalwork.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class StudentServiceImpl implements StudentService {
 
@@ -49,6 +51,15 @@ public class StudentServiceImpl implements StudentService {
         QueryWrapper<Clazz> qw = new QueryWrapper<>();
         QueryWrapper<Clazz> clazzQw = qw.eq("student_no",StuNo);
         return clazzMapper.selectOne(clazzQw);
+    }
+
+    /*
+        通过课程号获取选择该课程的班级列表
+     */
+    @Override
+    public List<Clazz> getClazzNo(Integer courseId) {
+        QueryWrapper<Clazz> queryWrapper = new QueryWrapper<>();
+        return clazzMapper.selectList(queryWrapper.eq("course_id",courseId));
     }
 
 }

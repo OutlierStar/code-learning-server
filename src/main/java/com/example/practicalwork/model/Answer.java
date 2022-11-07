@@ -4,12 +4,14 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 
 public class Answer {
-    @TableField("answer")
+
     @TableId(value = "answer_set_id")
     private Integer answerSerId;
     private Integer questionId;
+    @TableField(value = "answer")
     private String answer;
-    private Integer isAnswer;
+    @TableField(value = "is_answered")
+    private Integer isAnswered;
     private Integer score;
     private Integer isRead;
 
@@ -37,12 +39,12 @@ public class Answer {
         this.answer = answer;
     }
 
-    public Integer getIsAnswer() {
-        return isAnswer;
+    public Integer getIsAnswered() {
+        return isAnswered;
     }
 
-    public void setIsAnswer(Integer isAnswer) {
-        this.isAnswer = isAnswer;
+    public void setIsAnswered(Integer isAnswered) {
+        this.isAnswered = isAnswered;
     }
 
     public Integer getScore() {
@@ -67,7 +69,7 @@ public class Answer {
                 "answerSerId=" + answerSerId +
                 ", questionId=" + questionId +
                 ", answer='" + answer + '\'' +
-                ", isAnswer=" + isAnswer +
+                ", isAnswered=" + isAnswered +
                 ", score=" + score +
                 ", isRead=" + isRead +
                 '}';

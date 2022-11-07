@@ -24,22 +24,20 @@ public class StudentController {
     @Autowired
     private CourseService courseService;
 
-
     /*
         获取学生主页展示信息
      */
     @RequestMapping(value = "/index/login")
     public Msg Loginto(HttpServletRequest request, @RequestParam("studentNo")String studentNo, @RequestParam("studentPassword") String studentPassword){
         ModelAndView mv = new ModelAndView();
+
         if (studentService.StuInspectionLogin(studentNo,studentPassword)){
             //当前学生用户信息
             Student student = studentService.getOneStu(studentNo);
             System.out.println(student.toString());
             request.getSession().setAttribute("stuInfo",student);
             mv.addObject("stu",student);
-
             // 拿到当前用户所有的课程信息
-
             request.getSession().setAttribute("clazzNo",student.getClazzNo());
             List<Course> courseList = courseService.queryCourse(student.getClazzNo());
             mv.addObject("course",courseList);

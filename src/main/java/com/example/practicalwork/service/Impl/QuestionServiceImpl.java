@@ -30,15 +30,12 @@ public class QuestionServiceImpl implements QuestionService {
         插入题目集中的所有题目
      */
     @Override
-    public Msg addQuestion(List<Question> questionList) {
-
+    public Integer addQuestion(List<Question> questionList) {
+        int count = 0;
         for (Question question : questionList){
-            int count = questionMapper.insert(question);
-            if (count <= 0) {
-                return Msg.fail();
-            }
+             count+= questionMapper.insert(question);
         }
-        return Msg.success();
+        return count;
     }
 
 
@@ -46,13 +43,9 @@ public class QuestionServiceImpl implements QuestionService {
         通过课程id和班级号获得获取该课程发布的所有题目集
      */
     @Override
-    public List<QuestionSet> getQueSets(Integer courseId,String clazzNo) {
-        Map<String,Object> map = new HashMap<>();
-        map.put("course_id",courseId);
-        map.put("clazz_no",clazzNo);
-
+    public List<QuestionSet> getQueSets(Integer courseId) {
         QueryWrapper<QuestionSet> qw = new QueryWrapper<>();
-        QueryWrapper<QuestionSet> qwSet = qw.allEq(map);
+        QueryWrapper<QuestionSet> qwSet = qw.eq("course_id",courseId);
         List<QuestionSet> questionSets =  questionSetMapper.selectList(qwSet);
 
         ModelAndView mv = new ModelAndView();
