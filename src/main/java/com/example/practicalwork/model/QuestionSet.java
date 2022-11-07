@@ -39,6 +39,16 @@ public class QuestionSet implements Serializable {
 
     private String clazzNo;
 
+    private Integer setType;
+
+    public Integer getSetType() {
+        return setType;
+    }
+
+    public void setSetType(Integer setType) {
+        this.setType = setType;
+    }
+
     public String getClazzNo() {
         return clazzNo;
     }
@@ -118,6 +128,7 @@ public class QuestionSet implements Serializable {
                 ", totalItems=" + totalItems +
                 ", courseId=" + courseId +
                 ", clazzNo='" + clazzNo + '\'' +
+                ", setType=" + setType +
                 '}';
     }
 }

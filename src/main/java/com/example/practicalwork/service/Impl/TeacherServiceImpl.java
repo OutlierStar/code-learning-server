@@ -55,11 +55,6 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     /*
-
-     */
-
-
-    /*
         创建一个题目集
      */
     @Override
@@ -80,8 +75,6 @@ public class TeacherServiceImpl implements TeacherService {
        List<Student> studentList = studentMapper.selectList(queStudents);
 
        List<AnswerSet> arrayList = new ArrayList<>();
-
-       int count = 0;
        for (Student student : studentList){
            AnswerSet answerSet = new AnswerSet();
            answerSet.setAnswerSerId(0);

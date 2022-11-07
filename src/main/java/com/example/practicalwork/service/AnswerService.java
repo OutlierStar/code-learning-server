@@ -37,7 +37,7 @@ public interface AnswerService {
     /*
         批改所有题目
      */
-    Msg checkAnswers(Integer StuNo, Integer setId);
+    AnswerSet checkAnswers(Integer StuId, List<Integer> scoreList,Integer setId);
 
     /*
         自动批改选择题
@@ -51,7 +51,7 @@ public interface AnswerService {
     /*
         手动批改简答题
      */
-    Integer checkShortAnswers(List<Answer> answerList);
+    Integer checkShortAnswers(List<Answer> answerList,List<Integer> scoreList);
     //判分
     boolean Award(Integer answerId,Integer questionId,Integer score);
     //算总分

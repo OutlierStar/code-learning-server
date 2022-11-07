@@ -10,6 +10,7 @@ public class Answer {
     private Integer questionId;
     @TableField(value = "answer")
     private String answer;
+    @TableField(value = "is_answered")
     private Integer isAnswered;
     private Integer score;
     private Integer isRead;
@@ -42,7 +43,7 @@ public class Answer {
         return isAnswered;
     }
 
-    public void setIsAnswered(Integer isAnswer) {
+    public void setIsAnswered(Integer isAnswered) {
         this.isAnswered = isAnswered;
     }
 

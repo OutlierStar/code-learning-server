@@ -55,11 +55,6 @@ public class AnswerServiceImpl implements AnswerService {
     @Override
     public Answer getAnswers(String oneAnswer, Integer answerSetId,Integer questionId) {
 
-        Map<String,Object> map = new HashMap<>();
-        map.put("answer_set_id",answerSetId);
-        map.put("question_id",questionId);
-        QueryWrapper<Answer> queryWrapperOne = new QueryWrapper<>();
-        QueryWrapper<Answer> allAns = queryWrapperOne.allEq(map);
         Answer answer =  new Answer();
         answer.setAnswerSerId(answerSetId);
         answer.setQuestionId(questionId);
@@ -81,11 +76,12 @@ public class AnswerServiceImpl implements AnswerService {
         return answerSetMapper.selectOne(queryWrapper.allEq(map));
     }
 
+
     /*
         批改答卷
      */
     @Override
-    public Msg checkAnswers(Integer StuId, Integer setId) {
+    public AnswerSet checkAnswers(Integer StuId, List<Integer> scoreList,Integer setId) {
 
         Map<String,Object> map = new HashMap<>();
         map.put("student_id",StuId);
@@ -96,12 +92,10 @@ public class AnswerServiceImpl implements AnswerService {
         AnswerSet answerSet = answerSetMapper.selectOne(set);
 
         QueryWrapper<Answer> queWrapperTwo = new QueryWrapper<>();
-        QueryWrapper<Answer> ans = queWrapperTwo.eq("answer_set_id",answerSet.getAnswerSerId());
-        List<Answer> answerList = answerMapper.selectList(ans);
+        List<Answer> answerList = answerMapper.selectList(queWrapperTwo.eq("answer_set_id",answerSet.getAnswerSerId()));
 
         QueryWrapper<Question> queWrapperThree = new QueryWrapper<>();
-        QueryWrapper<Question> standardAns = queWrapperThree.eq("set_id",setId);
-        List<Question> questionList = questionMapper.selectList(standardAns);
+        List<Question> questionList = questionMapper.selectList(queWrapperThree.eq("set_id",setId));
 
         QueryWrapper<Answer> queWrapperFour = new QueryWrapper<>();
 
@@ -111,11 +105,15 @@ public class AnswerServiceImpl implements AnswerService {
         List<Answer> CompletionAnswerList = new ArrayList<>();
         List<Answer> ShortAnswerList = new ArrayList<>();
 
+
+
+
         for (int i = 0; i < questionList.size(); i++) {
             Question question = questionList.get(i);
-            QueryWrapper<Answer> typeAns = queryWrapperFive.eq("question_id",question.getId());
-            Answer answer = answerMapper.selectOne(typeAns);
-
+            QueryWrapper<Answer> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("question_id",question.getId());
+            queryWrapper.eq("answer_set_id",answerSet.getAnswerSerId());
+            Answer answer = answerMapper.selectOne(queryWrapper);
             if (question.getType().equals("选择题")){
                 ChoiceAnswerList.add(answer);
             }else if (question.getType().equals("填空题")){
@@ -125,14 +123,15 @@ public class AnswerServiceImpl implements AnswerService {
             }
         }
 
-        checkChoiceAnswers(ChoiceAnswerList);
-        checkCompletionAnswers(CompletionAnswerList);
-        checkShortAnswers(ShortAnswerList);
+        System.out.println(checkChoiceAnswers(ChoiceAnswerList));
+        System.out.println(checkCompletionAnswers(CompletionAnswerList));
+        System.out.println(checkShortAnswers(ShortAnswerList,scoreList));
 
 
         int sum = checkChoiceAnswers(ChoiceAnswerList)+
                 checkCompletionAnswers(CompletionAnswerList)+
-                checkShortAnswers(ShortAnswerList);
+                checkShortAnswers(ShortAnswerList,scoreList);
+
 //        for (int i = 0; i < answerList.size(); i++){
 //            Answer answer = answerList.get(i);
 //            Question question = questionList.get(i);
@@ -154,7 +153,7 @@ public class AnswerServiceImpl implements AnswerService {
         answerSet.setScore(sum);
         answerSetMapper.update(answerSet,set);
 
-        return null;
+        return answerSet;
     }
 
     /*
@@ -164,23 +163,27 @@ public class AnswerServiceImpl implements AnswerService {
     public Integer checkChoiceAnswers(List<Answer> answerList) {
         if (answerList == null) return 0;
         int sum = 0;
-        QueryWrapper<Question> queWrapperOne = new QueryWrapper<>();
-        QueryWrapper<Answer> queWrapperTwo = new QueryWrapper<>();
 
         for (Answer answer : answerList){
-            QueryWrapper<Question> standardAns = queWrapperOne.eq("id",answer.getQuestionId());
-            Question question = questionMapper.selectOne(standardAns);
-            Map<String,Object> map = new HashMap<>();
-
+            QueryWrapper<Question> queWrapperOne = new QueryWrapper<>();
+            int id= answer.getQuestionId();
+            Question question = questionMapper.selectOne(queWrapperOne.eq("id",id));
             if (answer.getIsAnswered()==1){
                 if (answer.getAnswer().equals(question.getAnswer())){
                     answer.setScore(question.getScore());
                     answer.setIsRead(1);
-                    map.put("question_id",answer.getQuestionId());
-                    map.put("answer_set_id",answer.getAnswerSerId());
-                    QueryWrapper<Answer> updateScore = queWrapperTwo.allEq(map);
-                    answerMapper.update(answer,updateScore);
+                    QueryWrapper<Answer> queryWrapper = new QueryWrapper<>();
+                    queryWrapper.eq("question_id",answer.getQuestionId());
+                    queryWrapper.eq("answer_set_id",answer.getAnswerSerId());
+                    answerMapper.update(answer,queryWrapper);
                     sum+=question.getScore();
+                }else{
+                    answer.setScore(0);
+                    answer.setIsRead(1);
+                    QueryWrapper<Answer> queryWrapper = new QueryWrapper<>();
+                    queryWrapper.eq("question_id",answer.getQuestionId());
+                    queryWrapper.eq("answer_set_id",answer.getAnswerSerId());
+                    answerMapper.update(answer,queryWrapper);
                 }
             }
         }
@@ -199,22 +202,28 @@ public class AnswerServiceImpl implements AnswerService {
         QueryWrapper<Question> queWrapperOne = new QueryWrapper<>();
         QueryWrapper<Answer> queWrapperTwo = new QueryWrapper<>();
         for(Answer answer : answerList){
-            QueryWrapper<Question> standardAns = queWrapperOne.eq("id",answer.getQuestionId());
-            Question question = questionMapper.selectOne(standardAns);
+            Question question = questionMapper.selectOne(queWrapperOne.eq("id",answer.getQuestionId()));
             Map<String,Object> map = new HashMap<>();
 
             if (answer.getIsAnswered() == 1){
                 String[] stuAns = answer.getAnswer().split(",");
                 String[] queAns = question.getAnswer().split(",");
-
-                float OneComScore = question.getScore()/queAns.length;
                 float AllComScore = 0;
                 answer.setIsRead(1);
-                for (int i = 0; i < queAns.length; i++){
-                    if (stuAns[i].equals(queAns[i])){
-                        AllComScore+=OneComScore;
+                if (queAns.length > 1){
+                    double num = question.getScore() * 1.0;
+                    double OneComScore = num/queAns.length;
+                    System.out.println(OneComScore);
+                    for (int i = 0; i < queAns.length; i++){
+                        if (stuAns[i].equals(queAns[i])){
+                            AllComScore+=OneComScore;
+                        }
                     }
+                }else{
+                    AllComScore = question.getScore();
                 }
+
+
                 answer.setScore(Math.round(AllComScore));
                 map.put("question_id",answer.getQuestionId());
                 map.put("answer_set_id",answer.getAnswerSerId());
@@ -224,7 +233,6 @@ public class AnswerServiceImpl implements AnswerService {
             }
 
         }
-
         return sum;
     }
 
@@ -232,10 +240,24 @@ public class AnswerServiceImpl implements AnswerService {
            手动批改简答题
     */
     @Override
-    public Integer checkShortAnswers(List<Answer> answerList) {
+    public Integer checkShortAnswers(List<Answer> answerList,List<Integer> scoreList) {
+        if (answerList == null) return 0;
         int sum = 0;
+        int j = 0;
 
-
+        for(Answer answer : answerList) {
+            QueryWrapper<Answer> queWrapperTwo = new QueryWrapper<>();
+            queWrapperTwo.eq("question_id", answer.getQuestionId());
+            queWrapperTwo.eq("answer_set_id", answer.getAnswerSerId());
+            if (answer.getIsAnswered() == 1) {
+                answer.setIsRead(1);
+                answer.setScore(scoreList.get(j));
+                answerMapper.update(answer, queWrapperTwo);
+                sum += scoreList.get(j);
+                System.out.println("-----"+sum);
+            }
+            j++;
+        }
         return sum;
     }
 
