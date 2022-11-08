@@ -5,17 +5,14 @@ import com.example.practicalwork.service.*;
 import com.example.practicalwork.service.Impl.Msg;
 import com.example.practicalwork.service.Impl.QuestionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
-
+@CrossOrigin
 @RestController
 public class TeacherController {
     @Autowired

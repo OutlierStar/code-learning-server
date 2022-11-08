@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,7 +47,7 @@ public class WordServiceImpl {
                 if (userAgent.contains("msie") || userAgent.contains("like gecko")) {
                     fileName = URLEncoder.encode(fileName, "UTF-8");
                 } else {
-                    fileName = new String(fileName.getBytes("utf-8"), "ISO-8859-1");
+                    fileName = new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
                 }
                 XWPFDocument doc = WordExportUtil.exportWord07(templatePath, params);
                 String tmpPath = temDir + fileName;

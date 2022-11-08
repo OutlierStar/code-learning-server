@@ -10,11 +10,11 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 public class Student {
-    @TableField("student")
     @TableId(value = "student_id")
     private Integer studentId;
     private String studentName;
     private String studentPassword;
+    @TableField(value = "student_birth")
     private Data studentBirth;
     private String memo;
     private String academyNo;

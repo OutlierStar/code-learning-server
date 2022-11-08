@@ -28,14 +28,11 @@ public class CourseServiceImpl implements CourseService {
     public List<Course> queryCourse(String clazzNO) {
         List<Course> courseList = new ArrayList<>();
         QueryWrapper<SelectCourse> qSelCourse = new QueryWrapper<>();
-        QueryWrapper<SelectCourse> selCourse = qSelCourse.eq("clazz_no",clazzNO);
-        List<SelectCourse> selectCourses = selectCourseMapper.selectList(selCourse);
-        System.out.println(selCourse.toString());
+        List<SelectCourse> selectCourseList = selectCourseMapper.selectList(qSelCourse.eq("clazz_no",clazzNO));
 
-        QueryWrapper<Course> qCourse = new QueryWrapper<>();
-        for (SelectCourse selectCourse : selectCourses){
-            QueryWrapper<Course> getCourse = qCourse.eq("course_id",selectCourse.getCourseId());
-            Course course = courseMapper.selectOne(getCourse);
+        for (SelectCourse selectcourse : selectCourseList){
+            QueryWrapper<Course> qCourse = new QueryWrapper<>();
+            Course course = courseMapper.selectOne(qCourse.eq("course_id",selectcourse.getCourseId()));
             courseList.add(course);
         }
         return courseList;

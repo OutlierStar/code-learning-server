@@ -12,10 +12,7 @@ import com.example.practicalwork.service.Impl.CourseServiceImpl;
 import com.example.practicalwork.service.Impl.Msg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,9 +20,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin
 @RestController
 public class CourseController {
 
+    @Autowired
+    private CourseServiceImpl courseService;
 
     /*
             获取课程详情信息
@@ -35,6 +35,14 @@ public class CourseController {
         ModelAndView mv = new ModelAndView();
         mv.addObject("CourseInfo",course);
         return Msg.success().add("Course",course);
+    }
+
+    /*
+        获取一个班的所有课程
+     */
+    @RequestMapping(value = "/student/getAllCourse")
+    public Msg getAllCourse(@RequestParam ("clazzNo") String clazzNo){
+        return Msg.success().add("courseList",courseService.queryCourse(clazzNo));
     }
 
 

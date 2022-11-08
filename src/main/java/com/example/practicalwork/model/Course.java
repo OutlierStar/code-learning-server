@@ -13,8 +13,6 @@ public class Course {
     private String Memo;
     private String courseDate;
     private String invitationCode;
-    @TableField(value = "clazz_no")
-    private String clazzNO;
 
     @Override
     public String toString() {
@@ -25,7 +23,6 @@ public class Course {
                 ", Memo='" + Memo + '\'' +
                 ", courseDate='" + courseDate + '\'' +
                 ", invitationCode='" + invitationCode + '\'' +
-                ", clazzNO='" + clazzNO + '\'' +
                 '}';
     }
 
@@ -79,12 +76,5 @@ public class Course {
         this.courseDate = courseDate;
     }
 
-    public String getClazzNO() {
-        return clazzNO;
-    }
-
-    public void setClazzNO(String clazzNO) {
-        this.clazzNO = clazzNO;
-    }
 
 }

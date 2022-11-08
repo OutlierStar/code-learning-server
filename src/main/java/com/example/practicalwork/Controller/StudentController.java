@@ -7,6 +7,7 @@ import com.example.practicalwork.service.CourseService;
 import com.example.practicalwork.service.Impl.Msg;
 import com.example.practicalwork.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-
+@CrossOrigin
 @RestController
 public class StudentController {
 
