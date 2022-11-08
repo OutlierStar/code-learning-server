@@ -25,21 +25,21 @@ public class TeacherController {
     QuestionService questionService;
     @Autowired
     AnswerService answerService;
-
-    /*
-        判断登录是否成功，并返回主页信息
-     */
-    @RequestMapping(value = "/index/teacherLogin")
-    public Msg teacherLogin(HttpServletRequest request, @RequestParam("teacherNo") String teacherNo,@RequestParam("teacherPassword") String teacherPassword){
-        Teacher teacher = teacherService.getTeacher(teacherNo);
-        List<Course> courseList = courseService.getTeacherCourse(teacherNo);
-        request.getSession().setAttribute("teacherInfo",teacher);
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("teacherInfo",teacher);
-        mv.addObject("courseList",courseList);
-        if (teacherService.TeacherInspectionLogin(teacherNo,teacherPassword)) return Msg.success().add("teacher",teacher);
-        return Msg.fail().add("teacher",null);
-    }
+//
+//    /*
+//        判断登录是否成功，并返回主页信息
+//     */
+//    @RequestMapping(value = "/index/teacherLogin")
+//    public Msg teacherLogin(HttpServletRequest request, @RequestParam("teacherNo") String teacherNo,@RequestParam("teacherPassword") String teacherPassword){
+//        Teacher teacher = teacherService.getTeacher(teacherNo);
+//        List<Course> courseList = courseService.getTeacherCourse(teacherNo);
+//        request.getSession().setAttribute("teacherInfo",teacher);
+//        ModelAndView mv = new ModelAndView();
+//        mv.addObject("teacherInfo",teacher);
+//        mv.addObject("courseList",courseList);
+//        if (teacherService.TeacherInspectionLogin(teacherNo,teacherPassword)) return Msg.success().add("teacher",teacher);
+//        return Msg.fail().add("teacher",null);
+//    }
 
     /*
         老师开设一门课程
@@ -93,34 +93,15 @@ public class TeacherController {
             return null;
     }
 
-
+    /*
+        批改学生答卷
+     */
     @RequestMapping(value = "/correctingStuAnswers")
     public Msg correctingStuAnswers(@RequestBody List<Integer> scoreList,@RequestParam("setId") Integer setId,@RequestParam("studentId") Integer studentId ){
         AnswerSet answerSet = answerService.checkAnswers(studentId,scoreList,setId);
         return Msg.success().add("stuAnsSet",answerSet);
     }
 
-
-//    /*
-//          老师判分模块
-//     */
-//    @RequestMapping(value = "/Award")
-//    public Msg award(@RequestParam("answerSetId") Integer answerId,@RequestParam("questionId") Integer questionId,@RequestParam("score")Integer score){
-//        if(teacherService.Award(answerId,questionId,score)){
-//            return  Msg.success();
-//        }else {
-//            return Msg.fail();
-//        }
-//    }
-//
-//    @RequestMapping(value = "/CountTotalScore")
-//    public  Msg CountTotalScore(@RequestParam("answerSetId")Integer answerId){
-//        if(teacherService.CountTotalScore(answerId)){
-//            return  Msg.success();
-//        }else {
-//            return Msg.fail();
-//        }
-//    }
 
 
 }

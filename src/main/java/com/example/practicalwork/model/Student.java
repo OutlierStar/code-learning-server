@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.util.Date;
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
@@ -15,7 +17,7 @@ public class Student {
     private String studentName;
     private String studentPassword;
     @TableField(value = "student_birth")
-    private Data studentBirth;
+    private Date studentBirth;
     private String memo;
     private String academyNo;
     private String studentSex;
@@ -78,11 +80,11 @@ public class Student {
         this.memo = memo;
     }
 
-    public Data getStudentBirth() {
+    public Date getStudentBirth() {
         return studentBirth;
     }
 
-    public void setStudentBirth(Data studentBirth) {
+    public void setStudentBirth(Date studentBirth) {
         this.studentBirth = studentBirth;
     }
 
