@@ -56,6 +56,7 @@ public class TeacherController {
     @RequestMapping(value = "/creatQuestionSet")
     public Msg creatQuestionSet(@RequestBody QuestionSet questionSet){
         if (teacherService.creatQueSet(questionSet)){
+            System.out.println(questionSet.getSetId());
             List<AnswerSet> stuSets = teacherService.creatStuAnsSets(questionSet.getSetId(), questionSet.getClazzNo());
 
             return Msg.success().add("stuSets",stuSets);

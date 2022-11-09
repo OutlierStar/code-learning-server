@@ -1,18 +1,17 @@
 package com.example.practicalwork.Controller;
 
 
-import com.example.practicalwork.model.Course;
-import com.example.practicalwork.model.Student;
-import com.example.practicalwork.model.Teacher;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.practicalwork.Mapper.ClazzMapper;
+import com.example.practicalwork.Mapper.SelectCourseMapper;
+import com.example.practicalwork.Mapper.TeacherMapper;
+import com.example.practicalwork.model.*;
 import com.example.practicalwork.service.CourseService;
 import com.example.practicalwork.service.Impl.Msg;
 import com.example.practicalwork.service.StudentService;
 import com.example.practicalwork.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +28,13 @@ public class StudentController {
 
     @Autowired
     private TeacherService teacherService;
+
+    @Autowired
+    SelectCourseMapper selectCourseMapper;
+
+    @Autowired
+    ClazzMapper clazzMapper;
+
     /*
         获取学生主页展示信息
      */
@@ -77,6 +83,39 @@ public class StudentController {
            ModelAndView mv = new ModelAndView();
            mv.addObject("studentInfo",student);
            return Msg.success().add("student",student);
+    }
+
+
+
+    /**
+     *插入选课表
+     *
+     * @author wdx
+     */
+    @RequestMapping(value = "/addSelectCourse")
+    public Msg addSelectCourse(@RequestBody List<SelectCourse> selectCourseList){
+        Msg msg = Msg.fail().add("error","插入失败");
+        int count = 0;
+        int flag = 0;
+        if (selectCourseList==null){
+            return msg;
+        }
+        for (SelectCourse selectCourse : selectCourseList){
+            QueryWrapper<SelectCourse> sc = new QueryWrapper<>(selectCourse);
+            if (selectCourseMapper.exists(sc)){
+                flag++;
+            }else{
+                count+= selectCourseMapper.insert(selectCourse);
+            }
+        }
+        if (flag>0){
+            msg.add("error","包含"+flag+"条重复插入");
+        }
+        if(count>0){
+            msg.add("result","包含"+count+"条成功插入");
+            msg.besuccess();
+        }
+        return msg;
     }
 
 
