@@ -47,11 +47,24 @@ public class CourseServiceImpl implements CourseService {
         return courseMapper.selectList(queryWrapper.eq("teacher_no",teacherNo));
     }
 
-
+    /*
+        添加课程
+     */
     @Override
-    public void addCourse(Course course) {
-        int count = courseMapper.insert(course);
-        System.out.println("插入成功");
+    public boolean addCourse(Course course) {
+        int count = courseMapper.insert(course);;
+        return count > 0;
+    }
+    /*
+        插入选课表
+     */
+    @Override
+    public boolean addSelectCourse(Integer courseId, String clazzNo) {
+        SelectCourse selectCourse = new SelectCourse();
+        selectCourse.setCourseId(courseId);
+        selectCourse.setClazzNo(clazzNo);
+        int count = selectCourseMapper.insert(selectCourse);
+        return count > 0;
     }
 
 

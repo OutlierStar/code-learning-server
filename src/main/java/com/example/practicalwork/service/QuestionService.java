@@ -15,5 +15,4 @@ public interface QuestionService {
     //获取当前题目集中的所有题目
     List<Question> getAllQuestions(Integer itemId);
 
-
 }

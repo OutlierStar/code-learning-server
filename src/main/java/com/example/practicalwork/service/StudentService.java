@@ -2,6 +2,7 @@ package com.example.practicalwork.service;
 
 import com.example.practicalwork.model.Clazz;
 import com.example.practicalwork.model.QuestionSet;
+import com.example.practicalwork.model.SelectCourse;
 import com.example.practicalwork.model.Student;
 
 import java.util.List;
@@ -14,6 +15,7 @@ public interface StudentService {
     //获取学生所在班级信息
     Clazz getClazzInfo(String StuNo);
     //通过课程号获取选择该课程的班级列表
-    List<Clazz> getClazzNo(Integer courseId);
-
+    List<SelectCourse> getClazzNo(Integer courseId);
+    //通过班级号找到整个班所有的学生
+    List<Student> getStus(String clazzNo);
 }

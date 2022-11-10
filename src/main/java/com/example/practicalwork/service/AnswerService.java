@@ -24,15 +24,16 @@ public interface AnswerService {
 
     Answer getAnswers(String oneAnswer, Integer answerSetId,Integer questionId);
 
-//    /*
-//        获取该课程当前题目集学生提交的答卷列表
-//     */
-//    List<AnswerSet> StuAnswerSets(Integer setId, )
+
     /*
         获取当前学生答卷
      */
     AnswerSet getStuAnswerSet(Integer setId, Integer studentId);
 
+    /*
+        获取学生答卷中的所有答案
+     */
+    List<Answer> getStuAnsList(Integer answerSetId);
 
     /*
         批改所有题目
@@ -52,8 +53,9 @@ public interface AnswerService {
         手动批改简答题
      */
     Integer checkShortAnswers(List<Answer> answerList,List<Integer> scoreList);
-    //判分
-    boolean Award(Integer answerId,Integer questionId,Integer score);
-    //算总分
-    boolean CountTotalScore(Integer answerId);
+
+    /*
+        手动批改编程题
+     */
+//    Integer checkProgramAnswers(List<Answer> answerList,List<Integer> scoreList);
 }

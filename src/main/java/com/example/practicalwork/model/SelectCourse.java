@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.annotation.TableId;
 
 public class SelectCourse {
 
-
+    @TableId(value = "course_id")
+    @TableField(value = "course_id")
     private Integer courseId;
+    @TableField(value = "clazz_no")
     private String clazzNo;
     public int getCourseId() {
         return courseId;
