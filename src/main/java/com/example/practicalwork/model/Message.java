@@ -10,6 +10,15 @@ public class Message {
     private String content;
     private Integer state;
 
+    public Message() {
+    }
+
+    public Message(String studentNo, String content, Integer state) {
+        this.studentNo = studentNo;
+        this.content = content;
+        this.state = state;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -50,5 +59,13 @@ public class Message {
                 ", content='" + content + '\'' +
                 ", state=" + state +
                 '}';
+    }
+
+    public String simpleToString(){
+        return "{\"id\":"+this.id+"," +
+                "\"studentNo\":"+ this.studentNo +"," +
+                "\"content\":"+ this.content +"," +
+                "\"state\":"+this.state +"" +
+                "}";
     }
 }
