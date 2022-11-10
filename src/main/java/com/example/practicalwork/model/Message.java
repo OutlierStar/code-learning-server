@@ -63,7 +63,7 @@ public class Message {
 
     public String simpleToString(){
         return "{\"id\":"+this.id+"," +
-                "\"studentNo\":"+ this.studentNo +"," +
+                "\"studentNo\":\""+ this.studentNo +"\"," +
                 "\"content\":"+ this.content +"," +
                 "\"state\":"+this.state +"" +
                 "}";
