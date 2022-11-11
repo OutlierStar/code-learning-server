@@ -3,8 +3,6 @@ package com.example.practicalwork.Controller;
 
 import com.example.practicalwork.model.FileTreeNode;
 import com.example.practicalwork.service.Impl.Msg;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
