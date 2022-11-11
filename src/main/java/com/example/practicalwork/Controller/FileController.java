@@ -1,19 +1,22 @@
 package com.example.practicalwork.Controller;
 
 
+import com.example.practicalwork.model.FileTreeNode;
 import com.example.practicalwork.service.Impl.Msg;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/file")
@@ -32,9 +35,10 @@ public class FileController {
 
         // 获得原始文件名
 //        String fileName = file.getOriginalFilename();
-
 //        System.out.println("原始文件名:" + fileName);
 
+        //项目空间名
+        String dirName = studentNo+questionId+"";
 
         // 新文件名
         String newFileName = fileName+"."+end;
@@ -49,11 +53,31 @@ public class FileController {
                 getServletContext().getRealPath("/");
         String basePath = request.getScheme()+"://"+request.getServerName()+":"+
                 request.getServerPort()+contextPath+"/";
-//		        windows文件路径
-		        String path=realPath+"static\\"+end+"\\";
 
-//		        linux文件路径
-//        String path=realPath+"static/images/";
+        String path="";
+        String projectpath="";
+
+        if (System.getProperty("os.name").toLowerCase().contains("linux")){
+//          linux文件路径
+            if (dir.length()>0){
+                path=realPath+"static/"+dirName+"/"+dir+"/";
+                projectpath=realPath+"static/"+dirName+"/";
+            }else{
+                path=realPath+"static/"+dirName+"/";
+                projectpath=path;
+            }
+        }else if (System.getProperty("os.name").toLowerCase().contains("windows")){
+//		    windows文件路径
+            if (dir.length()>0){
+                path=realPath+"static\\"+dirName+"\\"+dir+"\\";
+                projectpath=realPath+"static\\"+dirName+"\\";
+            }else {
+                path=realPath+"static\\"+dirName+"\\";
+                projectpath=path;
+            }
+        }else{
+            System.out.println("judge system occur error");
+        }
 
         System.out.println("path:" + path);
 //        System.out.println("path1:" + path1);
@@ -86,8 +110,36 @@ public class FileController {
         // 保存文件地址，用于JSP页面回显
         model.addAttribute("fileUrl", basePath +""+ newFileName);
 
-        String src = basePath +"static/"+end+"/"+ newFileName;
-        return Msg.success().add("path", src);
+        String src="";
+        if (dir.length()>0){
+            src = basePath +"static/"+dirName+"/"+dir+"/"+ newFileName;
+        }else {
+            src = basePath +"static/"+dirName+"/"+ newFileName;
+        }
+
+        File mkdirpath = new File(projectpath);
+        List<FileTreeNode> fileTree = getFileTree(mkdirpath);
+
+        return Msg.success().add("path", src).add("tree",fileTree);
     }
 
+
+
+    public List<FileTreeNode> getFileTree(File file) {
+        List<FileTreeNode> baseTreeNodes = new ArrayList<>();
+        File[] childFiles = file.listFiles();
+        if (childFiles != null) {
+            for (File listFile : childFiles) {
+                FileTreeNode baseTreeNode = new FileTreeNode();
+                baseTreeNode.setName(listFile.getName());
+                baseTreeNode.setIfDir(listFile.isDirectory());
+                baseTreeNode.setPath(listFile.getAbsolutePath());
+                baseTreeNode.setLength(listFile.length());
+                baseTreeNode.getChildren().addAll(getFileTree(listFile));
+                baseTreeNodes.add(baseTreeNode);
+            }
+        }
+
+        return baseTreeNodes;
+    }
 }
