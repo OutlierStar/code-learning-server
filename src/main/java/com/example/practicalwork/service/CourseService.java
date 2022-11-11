@@ -8,7 +8,9 @@ public interface CourseService {
     //学生获取当前班级的全部课程
     List<Course> queryCourse(String clazzNO);
     //老师添加课程
-    void addCourse(Course course);
+    boolean addCourse(Course course);
+    //插入选课表
+    boolean addSelectCourse(Integer courseId, String clazzNo);
     //获取老师所授课程
     List<Course> getTeacherCourse(String teacherNo);
 

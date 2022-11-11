@@ -28,6 +28,11 @@ public class CourseController {
     private CourseServiceImpl courseService;
 
     /*
+
+     */
+
+
+    /*
             获取课程详情信息
     */
     @RequestMapping(value = "/IntoCourseInfo")

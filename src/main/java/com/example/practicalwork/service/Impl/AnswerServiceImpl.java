@@ -54,7 +54,6 @@ public class AnswerServiceImpl implements AnswerService {
     */
     @Override
     public Answer getAnswers(String oneAnswer, Integer answerSetId,Integer questionId) {
-
         Answer answer =  new Answer();
         answer.setAnswerSerId(answerSetId);
         answer.setQuestionId(questionId);
@@ -63,17 +62,28 @@ public class AnswerServiceImpl implements AnswerService {
         answer.setScore(null);
         answer.setIsRead(0);
         answerMapper.insert(answer);
-
         return answer;
     }
 
+    /*
+        获取学生的答卷信息
+     */
     @Override
     public AnswerSet getStuAnswerSet(Integer setId, Integer studentId) {
-        Map<String,Object> map = new HashMap<>();
-        map.put("set_id",setId);
-        map.put("student_id",studentId);
         QueryWrapper<AnswerSet> queryWrapper = new QueryWrapper<>();
-        return answerSetMapper.selectOne(queryWrapper.allEq(map));
+        queryWrapper.eq("set_id",setId);
+        queryWrapper.eq("student_id",studentId);
+        return answerSetMapper.selectOne(queryWrapper);
+    }
+
+    /*
+        获取学生答卷中的所有答案
+     */
+    @Override
+    public List<Answer> getStuAnsList(Integer answerSetId) {
+        QueryWrapper<Answer> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("answer_set_id",answerSetId);
+        return answerMapper.selectList(queryWrapper);
     }
 
 
@@ -97,29 +107,27 @@ public class AnswerServiceImpl implements AnswerService {
         QueryWrapper<Question> queWrapperThree = new QueryWrapper<>();
         List<Question> questionList = questionMapper.selectList(queWrapperThree.eq("set_id",setId));
 
-        QueryWrapper<Answer> queWrapperFour = new QueryWrapper<>();
-
-        QueryWrapper<Answer> queryWrapperFive = new QueryWrapper<>();
-
         List<Answer> ChoiceAnswerList = new ArrayList<>();
         List<Answer> CompletionAnswerList = new ArrayList<>();
         List<Answer> ShortAnswerList = new ArrayList<>();
+        List<Answer> ProQueAnswerList = new ArrayList<>();
 
-
-
-
-        for (int i = 0; i < questionList.size(); i++) {
-            Question question = questionList.get(i);
+        for (Question question : questionList) {
             QueryWrapper<Answer> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("question_id",question.getId());
-            queryWrapper.eq("answer_set_id",answerSet.getAnswerSerId());
+            queryWrapper.eq("question_id", question.getId());
+            queryWrapper.eq("answer_set_id", answerSet.getAnswerSerId());
             Answer answer = answerMapper.selectOne(queryWrapper);
-            if (question.getType().equals("选择题")){
-                ChoiceAnswerList.add(answer);
-            }else if (question.getType().equals("填空题")){
-                CompletionAnswerList.add(answer);
-            }else if (question.getType().equals("简答题")){
-                ShortAnswerList.add(answer);
+            switch (question.getType()) {
+                case "选择题":
+                    ChoiceAnswerList.add(answer);
+                    break;
+                case "填空题":
+                    CompletionAnswerList.add(answer);
+                    break;
+                case "简答题":
+                case "编程题":
+                    ShortAnswerList.add(answer);
+                    break;
             }
         }
 
@@ -132,24 +140,7 @@ public class AnswerServiceImpl implements AnswerService {
                 checkCompletionAnswers(CompletionAnswerList)+
                 checkShortAnswers(ShortAnswerList,scoreList);
 
-//        for (int i = 0; i < answerList.size(); i++){
-//            Answer answer = answerList.get(i);
-//            Question question = questionList.get(i);
-//            if (answer.getAnswer().equals(question.getAnswer())){
-//                answer.setScore(question.getScore());
-//                QueryWrapper<Answer> updateScore = queWrapperFour.eq("question_id",answer.getQuestionId());
-//                answerMapper.update(answer,updateScore);
-//                sum+=question.getScore();
-//            }else{
-//                answer.setScore(0);
-//                QueryWrapper<Answer> updateScore = queWrapperFour.eq("question_id",answer.getQuestionId());
-//                answerMapper.update(answer,updateScore);
-//            }
-//       }
-
-        /*
-             批改完后给出总分数
-         */
+        // 批改完后给出总分数
         answerSet.setScore(sum);
         answerSetMapper.update(answerSet,set);
 
@@ -223,7 +214,6 @@ public class AnswerServiceImpl implements AnswerService {
                     AllComScore = question.getScore();
                 }
 
-
                 answer.setScore(Math.round(AllComScore));
                 map.put("question_id",answer.getQuestionId());
                 map.put("answer_set_id",answer.getAnswerSerId());
@@ -261,36 +251,4 @@ public class AnswerServiceImpl implements AnswerService {
         return sum;
     }
 
-    /*
-               教师判分
-         */
-    @Override
-    public boolean Award(Integer answerId, Integer questionId, Integer score) {
-        QueryWrapper<Answer> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("answer_set_id",answerId);
-        queryWrapper.eq("question_id",questionId);
-        Answer answer = answerMapper.selectOne(queryWrapper);
-        answer.setScore(score);
-        int count = answerMapper.update(answer,queryWrapper);
-        return count >0;
-    }
-    /*
-    算总分
-     */
-    @Override
-    public boolean CountTotalScore(Integer answerSetId) {
-        QueryWrapper<Answer> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("answer_set_id",answerSetId);
-        List<Answer> answers = answerMapper.selectList(queryWrapper);
-        int total = 0;
-        for(Answer answer :answers){
-            total += answer.getScore();
-        }
-        QueryWrapper<AnswerSet> wrapper = new QueryWrapper<>();
-        wrapper.eq("answer_set_id",answerSetId);
-        AnswerSet answerSet = answerSetMapper.selectOne(wrapper);
-        answerSet.setScore(total);
-        int count = answerSetMapper.update(answerSet,wrapper);
-        return count>0;
-    }
 }

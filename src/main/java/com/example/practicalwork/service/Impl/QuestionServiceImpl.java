@@ -61,9 +61,8 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public List<Question> getAllQuestions(Integer setId) {
         QueryWrapper<Question> queryWrapper = new QueryWrapper<>();
-        QueryWrapper<Question> queryQuestion = queryWrapper.eq("set_id",setId);
-
-        return questionMapper.selectList(queryQuestion);
+        queryWrapper.eq("set_id",setId);
+        return questionMapper.selectList(queryWrapper);
     }
 
 

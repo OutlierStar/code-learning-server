@@ -14,8 +14,8 @@ import java.util.Date;
 @Accessors(chain = true)
 public class AnswerSet {
     @TableField("answer_set")
-    @TableId(value = "answer_set_id",type = IdType.AUTO)
-    private Integer answerSerId;
+    @TableId(value = "answet_set_id",type = IdType.AUTO)
+    private Integer answerSetId;
     private Integer SetId;
     private Integer studentId;
     private Date submitTime;
@@ -26,11 +26,11 @@ public class AnswerSet {
 
 
     public Integer getAnswerSerId() {
-        return answerSerId;
+        return answerSetId;
     }
 
     public void setAnswerSerId(Integer answerSerId) {
-        this.answerSerId = answerSerId;
+        this.answerSetId = answerSerId;
     }
 
     public Integer getSetId() {
@@ -94,7 +94,7 @@ public class AnswerSet {
     @Override
     public String toString() {
         return "AnswerSet{" +
-                "answerSerId=" + answerSerId +
+                "answerSerId=" + answerSetId +
                 ", SetId=" + SetId +
                 ", studentId=" + studentId +
                 ", submitTime=" + submitTime +
