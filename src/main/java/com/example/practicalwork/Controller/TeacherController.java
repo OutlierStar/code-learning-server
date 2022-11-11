@@ -1,12 +1,15 @@
 package com.example.practicalwork.Controller;
-import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.practicalwork.Mapper.TeacherMapper;
 import com.example.practicalwork.model.*;
 import com.example.practicalwork.service.*;
 import com.example.practicalwork.service.Impl.Msg;
+import com.example.practicalwork.service.Impl.QuestionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
 @CrossOrigin
@@ -22,6 +25,21 @@ public class TeacherController {
     QuestionService questionService;
     @Autowired
     AnswerService answerService;
+//
+//    /*
+//        判断登录是否成功，并返回主页信息
+//     */
+//    @RequestMapping(value = "/index/teacherLogin")
+//    public Msg teacherLogin(HttpServletRequest request, @RequestParam("teacherNo") String teacherNo,@RequestParam("teacherPassword") String teacherPassword){
+//        Teacher teacher = teacherService.getTeacher(teacherNo);
+//        List<Course> courseList = courseService.getTeacherCourse(teacherNo);
+//        request.getSession().setAttribute("teacherInfo",teacher);
+//        ModelAndView mv = new ModelAndView();
+//        mv.addObject("teacherInfo",teacher);
+//        mv.addObject("courseList",courseList);
+//        if (teacherService.TeacherInspectionLogin(teacherNo,teacherPassword)) return Msg.success().add("teacher",teacher);
+//        return Msg.fail().add("teacher",null);
+//    }
 
     /*
         老师开设一门课程
@@ -33,28 +51,19 @@ public class TeacherController {
     }
 
     /*
-        插入选课表
-     */
-    @RequestMapping("/addSelectCourse")
-    private Msg IntoSelectCourse(@RequestParam("courseId") Integer courseId ,@RequestBody List<String> clazzNoList ){
-        for (String clazzNo : clazzNoList){
-            courseService.addSelectCourse(courseId,clazzNo);
-        }
-        return Msg.success().add("courseId",courseId).add("clazzNoList",clazzNoList);
-    }
-
-    /*
           老师在课程中创建题目集并且给班级中的每一个学生创建一份答卷
      */
     @RequestMapping(value = "/creatQuestionSet")
     public Msg creatQuestionSet(@RequestBody QuestionSet questionSet){
         if (teacherService.creatQueSet(questionSet)){
             List<AnswerSet> stuSets = teacherService.creatStuAnsSets(questionSet.getSetId(), questionSet.getClazzNo());
+
             return Msg.success().add("stuSets",stuSets);
         }else{
             return Msg.fail();
         }
     }
+
 
     /*
         老师插入向题目集插入题目
@@ -64,8 +73,9 @@ public class TeacherController {
         return Msg.success().add("questionNum",questionService.addQuestion(questionList));
     }
 
+
     /*
-        获取对应题目集所有学生的答卷列表
+        获取对应题目集学生的答卷
      */
     @RequestMapping(value = "/gerAllStuAnswerSet")
     public Msg gerAllStuAnswerSet(HttpServletRequest request, @RequestParam("courseId") Integer courseId){
@@ -80,15 +90,9 @@ public class TeacherController {
 //            clazzStuList.get(i).add()
         }
 
-    /*
-        获取题集的所有题目和学生答卷的所有答案
-     */
-    @RequestMapping(value = "/getStuAnswerSetInfo")
-    public Msg getStuAnswerSetInfo(@RequestParam("setId") Integer setId,@RequestParam("answerSetId") Integer answerSetId){
-        List<Question> questionList = questionService.getAllQuestions(setId);
-        List<Answer> answerList = answerService.getStuAnsList(answerSetId);
-        return Msg.success().add("questionList",questionList).add("answerList",answerList);
+            return null;
     }
+
 
 
     /*
