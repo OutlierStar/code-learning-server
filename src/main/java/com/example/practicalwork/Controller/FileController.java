@@ -123,8 +123,6 @@ public class FileController {
         return Msg.success().add("path", src).add("tree",fileTree);
     }
 
-
-
     public List<FileTreeNode> getFileTree(File file) {
         List<FileTreeNode> baseTreeNodes = new ArrayList<>();
         File[] childFiles = file.listFiles();
