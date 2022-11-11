@@ -28,6 +28,7 @@ public class Course {
 
 
 
+
     public String getInvitationCode() {
         return invitationCode;
     }

@@ -1,5 +1,6 @@
 package com.example.practicalwork.service.Impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.practicalwork.Mapper.*;
 import com.example.practicalwork.model.*;
@@ -30,6 +31,12 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Autowired
     private CourseMapper courseMapper;
+
+    @Autowired
+    private SelectCourseMapper selectCourseMapper;
+
+    @Autowired
+    private MessageMapper messageMapper;
    /*
         判断老师用户是否登录成功
     */
@@ -69,16 +76,31 @@ public class TeacherServiceImpl implements TeacherService {
         生成对应题目集学生的答卷
      */
     @Override
-    public List<AnswerSet> creatStuAnsSets(Integer setId, String clazzNo) {
-       QueryWrapper<Student> queryWrapperOne = new QueryWrapper<>();
-       QueryWrapper<Student> queStudents = queryWrapperOne.eq("clazz_no",clazzNo);
-       List<Student> studentList = studentMapper.selectList(queStudents);
+    public List<AnswerSet> creatStuAnsSets(QuestionSet questionSet) {
 
-       List<AnswerSet> arrayList = new ArrayList<>();
+        //在选课表里根据课程号拿到班级list
+        QueryWrapper<SelectCourse> courseId = new QueryWrapper<>();
+        courseId.eq("course_id",questionSet.getCourseId());
+        List<SelectCourse> clazzList = selectCourseMapper.selectList(courseId);
+
+        //遍历班级list拿到clazzNoList
+        List<Student> studentList = new ArrayList<>();
+        List<AnswerSet> arrayList = new ArrayList<>();
+        List<String> clazzNoList = new ArrayList<>();
+       for (SelectCourse selectCourse:clazzList){
+            clazzNoList.add(selectCourse.getClazzNo());
+       }
+
+//       根据clazzNoList构造条件选择器
+        QueryWrapper<Student> clazzNo = new QueryWrapper<>();
+        clazzNo.in("clazz_no",clazzNoList);
+        studentList = studentMapper.selectList(clazzNo);
+
+
        for (Student student : studentList){
            AnswerSet answerSet = new AnswerSet();
            answerSet.setAnswerSerId(0);
-           answerSet.setSetId(setId);
+           answerSet.setSetId(questionSet.getSetId());
            answerSet.setStudentId(student.getStudentId());
            Date date = new Date();
            answerSet.setSubmitTime(null);
@@ -88,6 +110,9 @@ public class TeacherServiceImpl implements TeacherService {
            answerSet.setIsRead(0);
            answerSetMapper.insert(answerSet);
            arrayList.add(answerSet);
+
+           Message newmag = new Message(student.getStudentNo(),"{ \"questionSet\":"+ JSON.toJSONString(questionSet)+"}",0);
+           messageMapper.insert(newmag);
        }
         return arrayList;
     }

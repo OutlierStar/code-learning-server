@@ -13,7 +13,7 @@ public interface TeacherService {
     //创建题目集
     boolean creatQueSet(QuestionSet questionSet);
     //生成对应题目集学生的答卷
-    List<AnswerSet> creatStuAnsSets(Integer setId, String clazzNo);
+    List<AnswerSet> creatStuAnsSets(QuestionSet questionSet);
     //开设一门课程
     boolean creatCourseToClazz(Course course);
 }

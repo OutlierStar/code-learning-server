@@ -37,8 +37,6 @@ public class QuestionSet implements Serializable {
 
     private Integer courseId;
 
-    private String clazzNo;
-
     private Integer setType;
 
     public Integer getSetType() {
@@ -47,14 +45,6 @@ public class QuestionSet implements Serializable {
 
     public void setSetType(Integer setType) {
         this.setType = setType;
-    }
-
-    public String getClazzNo() {
-        return clazzNo;
-    }
-
-    public void setClazzNo(String clazzNo) {
-        this.clazzNo = clazzNo;
     }
 
     public static long getSerialVersionUID() {
@@ -127,7 +117,6 @@ public class QuestionSet implements Serializable {
                 ", totalScore=" + totalScore +
                 ", totalItems=" + totalItems +
                 ", courseId=" + courseId +
-                ", clazzNo='" + clazzNo + '\'' +
                 ", setType=" + setType +
                 '}';
     }

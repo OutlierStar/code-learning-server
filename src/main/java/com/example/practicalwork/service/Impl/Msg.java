@@ -32,6 +32,16 @@ public class Msg {
         return result;
     }
 
+    public void besuccess(){
+        this.setCode(100);
+        this.setMsg("处理成功！");
+    }
+
+    public void befail(){
+        this.setCode(200);
+        this.setMsg("处理失败！");
+    }
+
     public Msg add(String key,Object value){
         this.getExtend().put(key, value);
         return this;
@@ -61,5 +71,26 @@ public class Msg {
         this.extend = extend;
     }
 
+    public String extendToString(){
+        String s="{";
+        int i=0;
+        for (Map.Entry<String, Object> entry : this.extend.entrySet()) {
+            String mapKey = entry.getKey();
+            String mapValue = (String)entry.getValue();
+            s+="\""+mapKey+ "\""+ ":" + mapValue;
+            i++;
+            if(i<this.extend.entrySet().size()){
+                s+=",";
+            }
+        }
+        s+="}";
+        return s;
+    }
 
+    public String simpleToString(){
+        return "{\"code\":"+this.code+"," +
+                "\"msg\":\""+ this.msg +"\"," +
+                "\"extend\":"+ extendToString() +"" +
+                "}";
+    }
 }

@@ -1,5 +1,8 @@
 package com.example.practicalwork.Controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.practicalwork.Mapper.*;
+import com.example.practicalwork.model.Academy;
 import com.example.practicalwork.model.Student;
 import com.example.practicalwork.model.Teacher;
 import com.example.practicalwork.service.AdminService;
@@ -15,11 +18,124 @@ import java.util.List;
 public class AdminController {
     @Autowired
     AdminService adminService;
+    @Autowired
+    AcademyMapper academyMapper;
+    @Autowired
+    AnswerSetMapper answerSetMapper;
+    @Autowired
+    AnswerMapper answerMapper;
+    @Autowired
+    ClazzMapper clazzMapper;
+    @Autowired
+    CourseMapper courseMapper;
+    @Autowired
+    MessageMapper messageMaper;
+    @Autowired
+    QuestionMapper questionMapper;
+    @Autowired
+    QuestionSetMapper questionSetMapper;
+    @Autowired
+    SelectCourseMapper selectCourseMapper;
+    @Autowired
+    StudentMapper studentMapper;
+    @Autowired
+    TeacherMapper teacherMapper;
+    @Autowired
+    TStudentItemMapper tStudentItemMapper;
+
+    /**
+     * getAll
+     *
+     * @author wdx
+     * @return
+     */
+
+
+    @RequestMapping(value = "/getAllStudent")
+    public Msg getAllStudent() {
+        return  Msg.success().add("students",studentMapper.selectList(null));
+    }
+
+    @RequestMapping(value = "/getAllAcademy")
+    public Msg getAllAcademy() {
+        return  Msg.success().add("students",academyMapper.selectList(null));
+    }
+
+    @RequestMapping(value = "/getAllTeacher")
+    public Msg getAllTeacher() {
+        return  Msg.success().add("students",teacherMapper.selectList(null));
+    }
+    /**
+     * 返回全部班级
+     *
+     * @author wdx
+     */
+    @RequestMapping(value = "/getAllClazz")
+    public Msg getAllClazz(){
+        return Msg.success().add("clazzs",clazzMapper.selectList(null));
+    }
+
+    /**
+     * 增加academy
+     *
+     * @author wdx
+     */
+    @RequestMapping(value = "/addAcademy")
+    public Msg addAcademy(@RequestBody Academy academy) {
+        if (academy == null)
+            return  Msg.fail();
+        QueryWrapper<Academy> wrapper = new QueryWrapper<>(academy);
+        if (academyMapper.exists(wrapper))
+            return Msg.fail().add("error","该学院号已经存在");
+        if(academyMapper.insert(academy)>0)
+            return  Msg.success().add("academy",academyMapper.selectOne(new QueryWrapper<Academy>().eq("academy_no",academy.getAcademyNo())));
+        return Msg.fail();
+    }
+
+    /**
+     * 删除academy
+     *
+     * @author wdx
+     */
+    @RequestMapping(value = "/deleteAcademy")
+    public Msg deleteStudent(@RequestBody Academy academy){
+        if (academy == null)
+            return  Msg.fail().add("error","academy不能为空");
+        QueryWrapper<Academy> wrapper = new QueryWrapper<>();
+        wrapper.eq("academy_no",academy.getAcademyNo());
+        int count = academyMapper.delete(wrapper);
+
+        if(count>0){
+            return Msg.success();
+        }
+        return Msg.fail();
+    }
+
+    /**
+     * 更新academy
+     *
+     * @author wdx
+     */
+    @RequestMapping(value = "/updateAcademy")
+    public Msg updateStudent(@RequestBody Academy academy) {
+        if (academy == null)
+            return  Msg.fail();
+        QueryWrapper<Academy> wrapper = new QueryWrapper<>();
+        wrapper.eq("academy_no",academy.getAcademyNo());
+        int count = academyMapper.update(academy,wrapper);
+        if(count>0)
+            return  Msg.success().add("academy",academyMapper.selectOne(new QueryWrapper<Academy>().eq("academy_no",academy.getAcademyNo())));
+        return Msg.fail();
+    }
+
 
     @RequestMapping(value = "/addStudent")
     public Msg addStudent(@RequestBody Student student) {
         if (student == null)
             return  Msg.fail();
+        QueryWrapper<Student> wrapper = new QueryWrapper<>(student);
+        if (studentMapper.exists(wrapper))
+            return Msg.fail().add("error","该学号学生已经存在");
         if(adminService.addStudent(student))
             return  Msg.success();
         return Msg.fail();
@@ -29,6 +145,9 @@ public class AdminController {
     public Msg addTeacher(@RequestBody Teacher teacher) {
         if (teacher == null)
             return  Msg.fail();
+        QueryWrapper<Teacher> wrapper = new QueryWrapper<>(teacher);
+        if (teacherMapper.exists(wrapper))
+            return Msg.fail().add("error","该工号老师已经存在");
         if(adminService.addTeacher(teacher))
             return  Msg.success();
         return Msg.fail();

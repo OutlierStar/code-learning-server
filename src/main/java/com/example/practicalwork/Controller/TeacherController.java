@@ -1,4 +1,7 @@
 package com.example.practicalwork.Controller;
+import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.practicalwork.Mapper.TeacherMapper;
 import com.example.practicalwork.model.*;
 import com.example.practicalwork.service.*;
 import com.example.practicalwork.service.Impl.Msg;
@@ -64,21 +67,18 @@ public class TeacherController {
     /*
         获取对应题目集所有学生的答卷列表
      */
-    @RequestMapping(value = "/getAllStuAnswerSet")
-    public Msg gerAllStuAnswerSet( @RequestParam("courseId") Integer courseId,@RequestParam("setId") Integer setId){
-        List<Student> stuList = new ArrayList<>();
-        List<SelectCourse> selectCourses = studentService.getClazzNo(courseId);
-        List<AnswerSet> answerSetList = new ArrayList<>();
-        for (SelectCourse selectCourse : selectCourses){
-            stuList.addAll(studentService.getStus(selectCourse.getClazzNo()));
-        }
+    @RequestMapping(value = "/gerAllStuAnswerSet")
+    public Msg gerAllStuAnswerSet(HttpServletRequest request, @RequestParam("courseId") Integer courseId){
+        Teacher teacher = (Teacher) request.getSession().getAttribute("teacherInfo");
+        List<List<Student>> clazzStuList = new ArrayList<>();
+        List<Clazz> clazzList = studentService.getClazzNo(courseId);
+        int i = 0;
+        for (Clazz clazz : clazzList){
+            for (int j = 0; j < clazz.getStudentNumber(); j++){
 
-        for (Student student : stuList){
-            answerSetList.add(answerService.getStuAnswerSet(setId,student.getStudentId()));
+            }
+//            clazzStuList.get(i).add()
         }
-
-        return Msg.success().add("AllStus",stuList).add("AllStuAnsSets",answerSetList);
-    }
 
     /*
         获取题集的所有题目和学生答卷的所有答案
