@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 
 public class Answer {
-
     @TableId(value = "answer_set_id")
     private Integer answerSerId;
     private Integer questionId;

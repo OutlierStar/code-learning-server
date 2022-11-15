@@ -99,7 +99,7 @@ public class TeacherServiceImpl implements TeacherService {
 
        for (Student student : studentList){
            AnswerSet answerSet = new AnswerSet();
-           answerSet.setAnswerSerId(0);
+           answerSet.setAnswerSetId(0);
            answerSet.setSetId(questionSet.getSetId());
            answerSet.setStudentId(student.getStudentId());
            Date date = new Date();

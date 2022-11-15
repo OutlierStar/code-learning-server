@@ -28,7 +28,7 @@ public interface AnswerService {
     /*
         获取当前学生答卷
      */
-    AnswerSet getStuAnswerSet(Integer setId, Integer studentId);
+    AnswerSet getStuAnswerSet(Integer setId);
 
     /*
         获取学生答卷中的所有答案

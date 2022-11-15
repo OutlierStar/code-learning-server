@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.TableId;
 
 public class Teacher {
     @TableId("teacher_no")
-
     private String teacherNo;
 
     private String teacherName;

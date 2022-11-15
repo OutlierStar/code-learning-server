@@ -10,6 +10,7 @@ import com.example.practicalwork.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,13 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public boolean addStudent(Student student) {
-        int count = studentMapper.insert(student);
+        int count=0;
+        try {
+            count = studentMapper.insert(student);
+        }catch (Exception e){
+            return count>0;
+        }
+
         return count>0;
     }
 

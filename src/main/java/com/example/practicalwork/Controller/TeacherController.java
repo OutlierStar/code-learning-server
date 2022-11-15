@@ -1,4 +1,8 @@
 package com.example.practicalwork.Controller;
+import com.baomidou.mybatisplus.core.assist.ISqlRunner;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.practicalwork.Mapper.AnswerMapper;
+import com.example.practicalwork.Mapper.AnswerSetMapper;
 import com.example.practicalwork.Mapper.TeacherMapper;
 import com.example.practicalwork.model.*;
 import com.example.practicalwork.service.*;
@@ -25,6 +29,10 @@ public class TeacherController {
     QuestionService questionService;
     @Autowired
     AnswerService answerService;
+    @Autowired
+    AnswerSetMapper answerSetMapper;
+    @Autowired
+    AnswerMapper answerMapper;
 //
 //    /*
 //        判断登录是否成功，并返回主页信息
@@ -56,8 +64,7 @@ public class TeacherController {
     @RequestMapping(value = "/creatQuestionSet")
     public Msg creatQuestionSet(@RequestBody QuestionSet questionSet){
         if (teacherService.creatQueSet(questionSet)){
-            List<AnswerSet> stuSets = teacherService.creatStuAnsSets(questionSet.getSetId(), questionSet.getClazzNo());
-
+            List<AnswerSet> stuSets = teacherService.creatStuAnsSets(questionSet);
             return Msg.success().add("stuSets",stuSets);
         }else{
             return Msg.fail();
@@ -77,22 +84,21 @@ public class TeacherController {
     /*
         获取对应题目集学生的答卷
      */
-    @RequestMapping(value = "/gerAllStuAnswerSet")
-    public Msg gerAllStuAnswerSet(HttpServletRequest request, @RequestParam("courseId") Integer courseId){
-        Teacher teacher = (Teacher) request.getSession().getAttribute("teacherInfo");
-        List<List<Student>> clazzStuList = new ArrayList<>();
-        List<Clazz> clazzList = studentService.getClazzNo(courseId);
-        int i = 0;
-        for (Clazz clazz : clazzList){
-            for (int j = 0; j < clazz.getStudentNumber(); j++){
-
-            }
-//            clazzStuList.get(i).add()
-        }
-
-            return null;
+    @RequestMapping(value = "/getAllStuAnswerSet")
+    public Msg gerAllStuAnswerSet(@RequestParam("setId") Integer setId){
+//        System.out.println(setId);
+            return Msg.success().add("stuAnswerSets",answerSetMapper.selectList(new QueryWrapper<AnswerSet>().eq("set_id",setId)));
     }
 
+
+        /*
+        获取对应题目集学生的答卷
+     */
+    @RequestMapping(value = "/getStuAnswerSetInfo")
+    public Msg getStuAnswerSetInfo(@RequestParam("answerSetId") Integer answerSetId){
+//        System.out.println(setId);
+        return Msg.success().add("Answers",answerMapper.selectList(new QueryWrapper<Answer>().eq("answer_set_id",answerSetId)));
+    }
 
 
     /*
@@ -103,6 +109,7 @@ public class TeacherController {
         AnswerSet answerSet = answerService.checkAnswers(studentId,scoreList,setId);
         return Msg.success().add("stuAnsSet",answerSet);
     }
+
 
 
 

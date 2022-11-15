@@ -73,12 +73,12 @@ public class QuestionController {
         System.out.println(studentId);
         List<Question> questionList = questionService.getAllQuestions(setId);
 //        Student student = (Student) request.getSession().getAttribute("stuInfo");
-        AnswerSet answerSet = answerService.getStuAnswerSet(setId,studentId);
+        AnswerSet answerSet = answerService.getStuAnswerSet(setId);
         Msg msg = new Msg();
         int i = 0;
         for (String answer : StuAnswers){
             msg.add(answer,answerService.getAnswers(answer,
-                    answerSet.getAnswerSerId(),questionList.get(i).getId()));
+                    answerSet.getAnswerSetId(),questionList.get(i).getId()));
             i++;
         }
         return Msg.success().add("msg",msg);

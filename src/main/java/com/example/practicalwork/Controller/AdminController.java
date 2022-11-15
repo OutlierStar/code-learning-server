@@ -84,8 +84,8 @@ public class AdminController {
     public Msg addAcademy(@RequestBody Academy academy) {
         if (academy == null)
             return  Msg.fail();
-        QueryWrapper<Academy> wrapper = new QueryWrapper<>(academy);
-        if (academyMapper.exists(wrapper))
+        QueryWrapper<Academy> wrapper = new QueryWrapper<>();
+        if (academyMapper.exists(wrapper.eq("academy_no",academy.getAcademyNo())))
             return Msg.fail().add("error","该学院号已经存在");
         if(academyMapper.insert(academy)>0)
             return  Msg.success().add("academy",academyMapper.selectOne(new QueryWrapper<Academy>().eq("academy_no",academy.getAcademyNo())));
@@ -128,13 +128,12 @@ public class AdminController {
         return Msg.fail();
     }
 
-
     @RequestMapping(value = "/addStudent")
     public Msg addStudent(@RequestBody Student student) {
         if (student == null)
             return  Msg.fail();
-        QueryWrapper<Student> wrapper = new QueryWrapper<>(student);
-        if (studentMapper.exists(wrapper))
+        QueryWrapper<Student> wrapper = new QueryWrapper<>();
+        if (studentMapper.exists(wrapper.eq("student_no",student.getStudentNo())))
             return Msg.fail().add("error","该学号学生已经存在");
         if(adminService.addStudent(student))
             return  Msg.success();
@@ -145,8 +144,9 @@ public class AdminController {
     public Msg addTeacher(@RequestBody Teacher teacher) {
         if (teacher == null)
             return  Msg.fail();
-        QueryWrapper<Teacher> wrapper = new QueryWrapper<>(teacher);
-        if (teacherMapper.exists(wrapper))
+
+        QueryWrapper<Teacher> wrapper = new QueryWrapper<>();
+        if (teacherMapper.exists(wrapper.eq("teacher_no",teacher.getTeacherNo())))
             return Msg.fail().add("error","该工号老师已经存在");
         if(adminService.addTeacher(teacher))
             return  Msg.success();

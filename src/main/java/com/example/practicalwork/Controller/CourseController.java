@@ -27,6 +27,9 @@ public class CourseController {
     @Autowired
     private CourseServiceImpl courseService;
 
+    @Autowired
+    CourseMapper courseMapper;
+
     /*
 
      */
@@ -36,10 +39,8 @@ public class CourseController {
             获取课程详情信息
     */
     @RequestMapping(value = "/IntoCourseInfo")
-    public Msg IntoCourseInfo( @RequestBody Course course){
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("CourseInfo",course);
-        return Msg.success().add("Course",course);
+    public Msg IntoCourseInfo( @RequestParam int courseId){
+        return Msg.success().add("course",courseMapper.selectOne(new QueryWrapper<Course>().eq("course_id",courseId)));
     }
 
     /*

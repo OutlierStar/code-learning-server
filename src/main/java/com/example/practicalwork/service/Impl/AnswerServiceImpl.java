@@ -69,10 +69,9 @@ public class AnswerServiceImpl implements AnswerService {
         获取学生的答卷信息
      */
     @Override
-    public AnswerSet getStuAnswerSet(Integer setId, Integer studentId) {
+    public AnswerSet getStuAnswerSet(Integer setId) {
         QueryWrapper<AnswerSet> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("set_id",setId);
-        queryWrapper.eq("student_id",studentId);
         return answerSetMapper.selectOne(queryWrapper);
     }
 
@@ -102,7 +101,7 @@ public class AnswerServiceImpl implements AnswerService {
         AnswerSet answerSet = answerSetMapper.selectOne(set);
 
         QueryWrapper<Answer> queWrapperTwo = new QueryWrapper<>();
-        List<Answer> answerList = answerMapper.selectList(queWrapperTwo.eq("answer_set_id",answerSet.getAnswerSerId()));
+        List<Answer> answerList = answerMapper.selectList(queWrapperTwo.eq("answer_set_id",answerSet.getAnswerSetId()));
 
         QueryWrapper<Question> queWrapperThree = new QueryWrapper<>();
         List<Question> questionList = questionMapper.selectList(queWrapperThree.eq("set_id",setId));
@@ -115,7 +114,7 @@ public class AnswerServiceImpl implements AnswerService {
         for (Question question : questionList) {
             QueryWrapper<Answer> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("question_id", question.getId());
-            queryWrapper.eq("answer_set_id", answerSet.getAnswerSerId());
+            queryWrapper.eq("answer_set_id", answerSet.getAnswerSetId());
             Answer answer = answerMapper.selectOne(queryWrapper);
             switch (question.getType()) {
                 case "选择题":

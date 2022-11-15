@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 
 public class Academy {
-    @TableField("academy")
     @TableId(value = "academy_no")
     private String academyNo;
     private String academyName;

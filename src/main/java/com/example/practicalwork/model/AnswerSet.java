@@ -3,6 +3,7 @@ package com.example.practicalwork.model;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -12,9 +13,9 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
+@TableName("answer_set")
 public class AnswerSet {
-    @TableField("answer_set")
-    @TableId(value = "answet_set_id",type = IdType.AUTO)
+    @TableId(value = "answer_set_id",type = IdType.AUTO)
     private Integer answerSetId;
     private Integer SetId;
     private Integer studentId;
@@ -25,11 +26,11 @@ public class AnswerSet {
     private Integer isRead;
 
 
-    public Integer getAnswerSerId() {
+    public Integer getAnswerSetId() {
         return answerSetId;
     }
 
-    public void setAnswerSerId(Integer answerSerId) {
+    public void setAnswerSetId(Integer answerSerId) {
         this.answerSetId = answerSerId;
     }
 
