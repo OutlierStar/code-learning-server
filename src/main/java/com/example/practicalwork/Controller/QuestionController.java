@@ -73,7 +73,7 @@ public class QuestionController {
         System.out.println(studentId);
         List<Question> questionList = questionService.getAllQuestions(setId);
 //        Student student = (Student) request.getSession().getAttribute("stuInfo");
-        AnswerSet answerSet = answerService.getStuAnswerSet(setId);
+        AnswerSet answerSet = answerService.getStuAnswerSet(setId,studentId);
         Msg msg = new Msg();
         int i = 0;
         for (String answer : StuAnswers){

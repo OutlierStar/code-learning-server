@@ -69,9 +69,10 @@ public class AnswerServiceImpl implements AnswerService {
         获取学生的答卷信息
      */
     @Override
-    public AnswerSet getStuAnswerSet(Integer setId) {
+    public AnswerSet getStuAnswerSet(Integer setId,Integer studentId) {
         QueryWrapper<AnswerSet> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("set_id",setId);
+        queryWrapper.eq("student_id",studentId);
         return answerSetMapper.selectOne(queryWrapper);
     }
 
