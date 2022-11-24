@@ -112,6 +112,8 @@ public class AnswerServiceImpl implements AnswerService {
         List<Answer> ShortAnswerList = new ArrayList<>();
         List<Answer> ProQueAnswerList = new ArrayList<>();
 
+        System.out.println("questionList:"+questionList);
+
         for (Question question : questionList) {
             QueryWrapper<Answer> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("question_id", question.getId());
@@ -130,6 +132,11 @@ public class AnswerServiceImpl implements AnswerService {
                     break;
             }
         }
+
+        System.out.println("ChoiceAnswerList:"+ChoiceAnswerList);
+        System.out.println("CompletionAnswerList:"+CompletionAnswerList);
+        System.out.println("ShortAnswerList:"+ShortAnswerList);
+        System.out.println("scoreList:"+scoreList);
 
         System.out.println(checkChoiceAnswers(ChoiceAnswerList));
         System.out.println(checkCompletionAnswers(CompletionAnswerList));
@@ -156,8 +163,13 @@ public class AnswerServiceImpl implements AnswerService {
         int sum = 0;
 
         for (Answer answer : answerList){
+            System.out.println("选择题");
+            System.out.println(answer);
             QueryWrapper<Question> queWrapperOne = new QueryWrapper<>();
+
             int id= answer.getQuestionId();
+
+
             Question question = questionMapper.selectOne(queWrapperOne.eq("id",id));
             if (answer.getIsAnswered()==1){
                 if (answer.getAnswer().equals(question.getAnswer())){

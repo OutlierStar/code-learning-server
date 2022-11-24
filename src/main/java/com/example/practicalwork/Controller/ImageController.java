@@ -25,12 +25,9 @@ public class ImageController {
 
         // 获得原始文件名
         String fileName = file.getOriginalFilename();
-
         System.out.println("原始文件名:" + fileName);
-
         // 新文件名
         String newFileName = fileName;
-
         // 获得项目的路径
         //ServletContext sc = request.getSession().getServletContext();
         // 上传位置
@@ -81,12 +78,14 @@ public class ImageController {
         }
         System.out.println("f:---+++++" + f.getPath());
         System.out.println("上传图片到:" + path +""+ newFileName);
-        // 保存文件地址，用于JSP页面回显
         model.addAttribute("fileUrl", basePath +""+ newFileName);
 
         String src = basePath +"static/images/"+ newFileName;
         return Msg.success().add("path", src);
     }
+
+
+
 
     @RequestMapping("/file/upLoadImage")
     public Msg FileUpload(

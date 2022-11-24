@@ -106,7 +106,10 @@ public class TeacherController {
      */
     @RequestMapping(value = "/correctingStuAnswers")
     public Msg correctingStuAnswers(@RequestBody List<Integer> scoreList,@RequestParam("setId") Integer setId,@RequestParam("studentId") Integer studentId ){
+        System.out.println(studentId);
+        System.out.println(setId);
         AnswerSet answerSet = answerService.checkAnswers(studentId,scoreList,setId);
+
         return Msg.success().add("stuAnsSet",answerSet);
     }
 
