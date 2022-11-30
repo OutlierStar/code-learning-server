@@ -42,6 +42,9 @@ public class StudentController {
 
     @Autowired
     MessageMapper messageMapper;
+
+    @Autowired
+    AnswerSetMapper answerSetMapper;
     /*
         获取学生主页展示信息
      */
@@ -178,5 +181,27 @@ public class StudentController {
             return Msg.success().add("message",message.simpleToString()).simpleToString();
         }
         return Msg.fail().simpleToString();
+    }
+
+
+    /**
+     * 获取学生的答卷分数
+     *
+     * @author wdx
+     *
+     * @return
+     */
+    @RequestMapping(value = "/getAnswerSet")
+    public Msg getAnswerSet(@RequestParam int setId, @RequestParam int studentId){
+        QueryWrapper<AnswerSet> i = new QueryWrapper<>();
+
+        i.eq("set_id",setId);
+        i.eq("student_id",studentId);
+
+        AnswerSet answerSet = answerSetMapper.selectOne(i);
+        if (answerSet!=null){
+            return Msg.success().add("answerSet",answerSet);
+        }
+        return Msg.fail();
     }
 }
