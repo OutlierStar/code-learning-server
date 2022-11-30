@@ -72,6 +72,7 @@ public class AdminController {
      */
     @RequestMapping(value = "/getAllClazz")
     public Msg getAllClazz(){
+        
         return Msg.success().add("clazzs",clazzMapper.selectList(null));
     }
 

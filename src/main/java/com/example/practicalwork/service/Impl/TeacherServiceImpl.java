@@ -111,7 +111,7 @@ public class TeacherServiceImpl implements TeacherService {
            answerSetMapper.insert(answerSet);
            arrayList.add(answerSet);
 
-           Message newmag = new Message(student.getStudentNo(),"{ \"questionSet\":"+ JSON.toJSONString(questionSet)+"}",0);
+           Message newmag = new Message(student.getStudentNo(),"{ \"questionSet\":"+ JSON.toJSONString(questionSet)+"}",0, 2);
            messageMapper.insert(newmag);
        }
         return arrayList;

@@ -170,7 +170,6 @@ public class AnswerServiceImpl implements AnswerService {
 
             int id= answer.getQuestionId();
 
-
             Question question = questionMapper.selectOne(queWrapperOne.eq("id",id));
             if (answer.getIsAnswered()==1){
                 if (answer.getAnswer().equals(question.getAnswer())){
