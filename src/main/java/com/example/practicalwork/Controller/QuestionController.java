@@ -41,6 +41,9 @@ public class QuestionController {
     @RequestMapping(value = "/IntoQuestionSetInfo")
     public Msg IntoQuestionSetInfo( @RequestParam("courseId") Integer courseId){
         List<QuestionSet> questionSetList = questionService.getQueSets(courseId);
+        for(QuestionSet questionSet: questionSetList){
+            System.out.println(questionSet);
+        }
         ModelAndView mv = new ModelAndView();
         mv.addObject("questSetList",questionSetList);
         return Msg.success().add("questionSets",questionSetList);

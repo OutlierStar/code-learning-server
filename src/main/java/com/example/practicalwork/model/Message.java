@@ -9,14 +9,27 @@ public class Message {
     private String studentNo;
     private String content;
     private Integer state;
+    private Integer type;
+    
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
 
     public Message() {
     }
 
-    public Message(String studentNo, String content, Integer state) {
+    public Message(String studentNo, String content, Integer state,Integer type
+) {
         this.studentNo = studentNo;
         this.content = content;
         this.state = state;
+        this.type = type;
+
     }
 
     public Integer getId() {

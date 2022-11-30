@@ -122,7 +122,7 @@ public class StudentController {
                 List<Student> students =  studentMapper.selectList(clazzNo);
                 for (Student student : students){
 
-                    Message newmag = new Message(student.getStudentNo(),"{ \"course\":"+ JSON.toJSONString(course)+"}",0);
+                    Message newmag = new Message(student.getStudentNo(),"{ \"course\":"+ JSON.toJSONString(course)+"}",0,1);
                     messageMapper.insert(newmag);
                 }
             }
