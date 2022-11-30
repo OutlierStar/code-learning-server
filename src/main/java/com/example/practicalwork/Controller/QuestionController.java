@@ -1,6 +1,7 @@
 package com.example.practicalwork.Controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.practicalwork.Mapper.AnswerMapper;
 import com.example.practicalwork.Mapper.AnswerSetMapper;
 import com.example.practicalwork.Mapper.QuestionMapper;
 import com.example.practicalwork.Mapper.QuestionSetMapper;
@@ -33,7 +34,8 @@ public class QuestionController {
     @Autowired
     private AnswerServiceImpl answerService;
 
-
+    @Autowired
+    AnswerSetMapper answerSetMapper;
 
     /*
         获取当前课程的作业列表
@@ -74,14 +76,28 @@ public class QuestionController {
         List<Question> questionList = questionService.getAllQuestions(setId);
 //        Student student = (Student) request.getSession().getAttribute("stuInfo");
         AnswerSet answerSet = answerService.getStuAnswerSet(setId,studentId);
-        Msg msg = new Msg();
+//        Msg msg = new Msg();
         int i = 0;
-        for (String answer : StuAnswers){
-            msg.add(answer,answerService.getAnswers(answer,
-                    answerSet.getAnswerSetId(),questionList.get(i).getId()));
+
+        for (Question question : questionList){
+            String tmp;
+            if (i>=StuAnswers.size() ){
+                tmp="";
+            }else {
+                tmp=StuAnswers.get(i);
+            }
+            answerService.getAnswers(tmp, answerSet.getAnswerSetId(), question.getId());
+//            msg.add(StuAnswers.get(i),);
             i++;
         }
-        return Msg.success().add("msg",msg);
+        answerSet.setIsSubmit(1);
+        answerSetMapper.updateById(answerSet);
+//        for (String answer : StuAnswers){
+//
+//            msg.add(answer,answerService.getAnswers(answer, answerSet.getAnswerSetId(), questionList.get(i).getId()));
+//            i++;
+//        }
+        return Msg.success();
     }
 
 }

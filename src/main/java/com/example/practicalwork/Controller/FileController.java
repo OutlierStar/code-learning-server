@@ -39,7 +39,14 @@ public class FileController {
         String dirName = studentNo+questionId+"";
 
         // 新文件名
-        String newFileName = fileName+"."+end;
+
+        String newFileName;
+        if(fileName.length()>0&&end.length()>0){
+            newFileName= fileName+"."+end;
+        }else {
+            newFileName="";
+        }
+
 
         // 获得项目的路径
         //ServletContext sc = request.getSession().getServletContext();

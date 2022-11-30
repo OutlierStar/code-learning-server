@@ -105,8 +105,8 @@ public class TeacherServiceImpl implements TeacherService {
            Date date = new Date();
            answerSet.setSubmitTime(null);
            answerSet.setAnswerTime(date);
-           answerSet.setScore(null);
-           answerSet.setIsSubmit(null);
+           answerSet.setScore(0);
+           answerSet.setIsSubmit(0);
            answerSet.setIsRead(0);
            answerSetMapper.insert(answerSet);
            arrayList.add(answerSet);
