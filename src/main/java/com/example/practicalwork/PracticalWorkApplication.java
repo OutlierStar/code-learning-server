@@ -10,7 +10,6 @@ public class PracticalWorkApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(PracticalWorkApplication.class, args);
-        //test
     }
 
 }
