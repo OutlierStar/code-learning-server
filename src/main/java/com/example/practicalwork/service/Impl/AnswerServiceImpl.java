@@ -59,7 +59,7 @@ public class AnswerServiceImpl implements AnswerService {
         answer.setQuestionId(questionId);
         answer.setAnswer(oneAnswer);
         answer.setIsAnswered(1);
-        answer.setScore(null);
+        answer.setScore(0);
         answer.setIsRead(0);
         answerMapper.insert(answer);
         return answer;
@@ -149,6 +149,7 @@ public class AnswerServiceImpl implements AnswerService {
 
         // 批改完后给出总分数
         answerSet.setScore(sum);
+        answerSet.setIsRead(1);
         answerSetMapper.update(answerSet,set);
 
         return answerSet;

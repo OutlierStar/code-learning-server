@@ -105,13 +105,13 @@ public class TeacherServiceImpl implements TeacherService {
            Date date = new Date();
            answerSet.setSubmitTime(null);
            answerSet.setAnswerTime(date);
-           answerSet.setScore(null);
-           answerSet.setIsSubmit(null);
+           answerSet.setScore(0);
+           answerSet.setIsSubmit(0);
            answerSet.setIsRead(0);
            answerSetMapper.insert(answerSet);
            arrayList.add(answerSet);
 
-           Message newmag = new Message(student.getStudentNo(),"{ \"questionSet\":"+ JSON.toJSONString(questionSet)+"}",0);
+           Message newmag = new Message(student.getStudentNo(),"{ \"questionSet\":"+ JSON.toJSONString(questionSet)+"}",0, 2);
            messageMapper.insert(newmag);
        }
         return arrayList;

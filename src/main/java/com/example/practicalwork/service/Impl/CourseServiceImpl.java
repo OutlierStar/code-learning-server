@@ -33,6 +33,7 @@ public class CourseServiceImpl implements CourseService {
         for (SelectCourse selectcourse : selectCourseList){
             QueryWrapper<Course> qCourse = new QueryWrapper<>();
             Course course = courseMapper.selectOne(qCourse.eq("course_id",selectcourse.getCourseId()));
+            System.out.println(course);
             courseList.add(course);
         }
         return courseList;
