@@ -79,6 +79,7 @@ public class QuestionController {
         List<Question> questionList = questionService.getAllQuestions(setId);
 //        Student student = (Student) request.getSession().getAttribute("stuInfo");
         AnswerSet answerSet = answerService.getStuAnswerSet(setId,studentId);
+        System.out.println("answerSet:"+answerSet);
 //        Msg msg = new Msg();
         int i = 0;
 
@@ -87,11 +88,16 @@ public class QuestionController {
             if (i>=StuAnswers.size() ){
                 tmp="";
             }else {
-                tmp=StuAnswers.get(i);
+                if(question.getType().equals("编程题")){
+                    tmp="";
+                }else{
+                    tmp=StuAnswers.get(i);
+                    i++;
+                }
             }
             answerService.getAnswers(tmp, answerSet.getAnswerSetId(), question.getId());
 //            msg.add(StuAnswers.get(i),);
-            i++;
+
         }
         answerSet.setIsSubmit(1);
         answerSetMapper.updateById(answerSet);
